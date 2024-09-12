@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="60" id="KGk-i7-Jjw" customClass="AddScriptTableViewCell" customModule="PromptPracOne" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="230" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="230" height="60"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LBE-jE-9W1">
+                        <rect key="frame" x="0.0" y="0.0" width="230" height="60"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pJA-IP-ECo">
+                                <rect key="frame" x="50" y="7.6666666666666679" width="130" height="45"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h4e-oU-gdn">
+                                        <rect key="frame" x="0.0" y="0.0" width="45" height="45"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="fPt-av-Mgr"/>
+                                            <constraint firstAttribute="width" constant="45" id="fgs-1I-Aqh"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="doc.badge.plus" catalog="system"/>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="스크립트 추가" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eZB-It-Ruc">
+                                        <rect key="frame" x="45" y="0.0" width="85" height="45"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="Bpl-Dy-L1p"/>
+                                            <constraint firstAttribute="width" constant="85" id="lFi-CS-z1J"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="pJA-IP-ECo" firstAttribute="centerY" secondItem="LBE-jE-9W1" secondAttribute="centerY" id="WBB-2l-Tm8"/>
+                            <constraint firstItem="pJA-IP-ECo" firstAttribute="centerX" secondItem="LBE-jE-9W1" secondAttribute="centerX" id="XdW-K0-5V1"/>
+                            <constraint firstAttribute="height" constant="60" id="pBu-m4-7jr"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="LBE-jE-9W1" secondAttribute="bottom" id="3Ar-cW-jWr"/>
+                    <constraint firstAttribute="trailing" secondItem="LBE-jE-9W1" secondAttribute="trailing" id="Nbg-9g-5S6"/>
+                    <constraint firstItem="LBE-jE-9W1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="gZu-vB-q9r"/>
+                    <constraint firstItem="LBE-jE-9W1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="qWj-3O-pj1"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="addButton" destination="h4e-oU-gdn" id="Qpu-Tv-b2V"/>
+                <outlet property="addLabel" destination="eZB-It-Ruc" id="6Us-An-yUC"/>
+                <outlet property="mainUIView" destination="LBE-jE-9W1" id="YWy-gV-Dn0"/>
+            </connections>
+            <point key="canvasLocation" x="-12.213740458015266" y="25.35211267605634"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="doc.badge.plus" catalog="system" width="116" height="128"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
