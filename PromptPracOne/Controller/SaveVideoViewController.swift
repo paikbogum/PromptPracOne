@@ -28,7 +28,6 @@ class SaveVideoViewController: UIViewController {
         //setupTapGesture() // 탭 제스처 설정
     }
     
-    
     private func setupVideoPlayer() {
         guard let videoURL = videoModel?.videoURL else { return }
         
@@ -97,7 +96,6 @@ class SaveVideoViewController: UIViewController {
             }
         }
     }
-
     
     @IBAction func cancelButtonTapped(_ sender: UIButton) {
         // RecordViewController로 돌아가기

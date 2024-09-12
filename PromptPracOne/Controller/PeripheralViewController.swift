@@ -12,6 +12,8 @@ import CoreBluetooth
 class PeripheralViewController: UIViewController, CBPeripheralManagerDelegate {
     var peripheralManager: CBPeripheralManager!
     var recordButtonCharacteristic: CBMutableCharacteristic?
+    var switchCameraButtonCharacteristic: CBMutableCharacteristic?
+    var zoomSliderCharacteristic: CBMutableCharacteristic?
     
     @IBOutlet var peripheralView: PeripheralView!
 
@@ -40,12 +42,23 @@ class PeripheralViewController: UIViewController, CBPeripheralManagerDelegate {
         if peripheral.state == .poweredOn {
             let characteristicUUID = CBUUID(string: "FFE1")
             recordButtonCharacteristic = CBMutableCharacteristic(type: characteristicUUID, properties: [.write, .notify], value: nil, permissions: [.writeable])
+            switchCameraButtonCharacteristic = CBMutableCharacteristic(type: characteristicUUID, properties: [.write, .notify], value: nil, permissions: [.writeable])
+            zoomSliderCharacteristic = CBMutableCharacteristic(type: characteristicUUID, properties: [.write, .notify], value: nil, permissions: [.writeable])
 
             let serviceUUID = CBUUID(string: "FFE0")
             let service = CBMutableService(type: serviceUUID, primary: true)
             service.characteristics = [recordButtonCharacteristic!]
+            
+            let switchService = CBMutableService(type: serviceUUID, primary: true)
+            switchService.characteristics = [switchCameraButtonCharacteristic!]
+            
+            let zoomService = CBMutableService(type: serviceUUID, primary: true)
+            zoomService.characteristics = [zoomSliderCharacteristic!]
 
             peripheralManager.add(service)
+            peripheralManager.add(switchService)
+            peripheralManager.add(zoomService)
+
             peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey: [serviceUUID]])
 
             updateStatusLabel(for: .connecting) // 연결 시도 중 상태로 업데이트
@@ -85,6 +98,17 @@ class PeripheralViewController: UIViewController, CBPeripheralManagerDelegate {
          let valueToSend = "toggle".data(using: .utf8)
          peripheralManager.updateValue(valueToSend!, for: characteristic, onSubscribedCentrals: nil)
     }
+    
+    @IBAction func cameraSwitchButtonTapped(_ sender: UIButton) {
+        guard let characteristic = switchCameraButtonCharacteristic else {
+             print("Characteristic is not set.")
+             return
+         }
+
+         let valueToSend = "toggleCamera".data(using: .utf8)
+         peripheralManager.updateValue(valueToSend!, for: characteristic, onSubscribedCentrals: nil)
+    }
+    
 }
 
 enum BluetoothConnectionState {

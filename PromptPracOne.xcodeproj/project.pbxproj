@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		865E07A0E0EFD2A998DCD2DF /* Pods_PromptPracOne.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA873FC9F809B445CA44C3E /* Pods_PromptPracOne.framework */; };
 		B72476BC2C8D8BE60045F4CD /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72476BB2C8D8BE60045F4CD /* BluetoothManager.swift */; };
+		B72476BE2C933B3A0045F4CD /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72476BD2C933B3A0045F4CD /* NotificationCenter.swift */; };
 		B77C291C2C6A344C003C4D91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C291B2C6A344C003C4D91 /* AppDelegate.swift */; };
 		B77C291E2C6A344C003C4D91 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C291D2C6A344C003C4D91 /* SceneDelegate.swift */; };
 		B77C29232C6A344C003C4D91 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = B77C29222C6A344C003C4D91 /* Base */; };
@@ -47,6 +48,7 @@
 		45ADC60235E6E684A4E04F51 /* Pods-PromptPracOne.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PromptPracOne.release.xcconfig"; path = "Target Support Files/Pods-PromptPracOne/Pods-PromptPracOne.release.xcconfig"; sourceTree = "<group>"; };
 		6AA873FC9F809B445CA44C3E /* Pods_PromptPracOne.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PromptPracOne.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B72476BB2C8D8BE60045F4CD /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
+		B72476BD2C933B3A0045F4CD /* NotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
 		B77C29182C6A344C003C4D91 /* PromptPracOne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PromptPracOne.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B77C291B2C6A344C003C4D91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B77C291D2C6A344C003C4D91 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				B77DE39C2C7B37E000B254C9 /* SettingModel.swift */,
 				B77DE3B62C83502100B254C9 /* VideoModel.swift */,
 				B72476BB2C8D8BE60045F4CD /* BluetoothManager.swift */,
+				B72476BD2C933B3A0045F4CD /* NotificationCenter.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 				B7E56F082C8C58920037EFBF /* PeripheralView.swift in Sources */,
 				B77C291C2C6A344C003C4D91 /* AppDelegate.swift in Sources */,
 				B77DE3952C7768A100B254C9 /* RecordingViewController.swift in Sources */,
+				B72476BE2C933B3A0045F4CD /* NotificationCenter.swift in Sources */,
 				B77DE39B2C7B360C00B254C9 /* SettingView.swift in Sources */,
 				B77C291E2C6A344C003C4D91 /* SceneDelegate.swift in Sources */,
 				B77DE39F2C7B3AE800B254C9 /* HalfSizePresentationController.swift in Sources */,

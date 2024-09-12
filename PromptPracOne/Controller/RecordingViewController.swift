@@ -79,9 +79,17 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         NotificationCenter.default.addObserver(self, selector: #selector(handleScrollSpeedChanged(_:)), name: .scrollSpeedChanged, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateTableView), name: .didDiscoverPeripheral, object: nil)
+        
+        // 카메라 전환 명령을 받기 위한 Notification
+        NotificationCenter.default.addObserver(self, selector: #selector(switchCameraTapped(_:)), name: .toggleCamera, object: nil)
+        // 줌 제어 명령을 받기 위한 Notification
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePinchGesture(_:)), name: .zoomCamera, object: nil)
     }
     deinit {
         NotificationCenter.default.removeObserver(self, name: .toggleRecording, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .toggleCamera, object: nil)
+        
     }
     
     
@@ -218,7 +226,6 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         }
         
         captureSession.commitConfiguration()
-        
         
         let minFrameDuration = newCamera.activeVideoMinFrameDuration
         let maxFrameDuration = newCamera.activeVideoMaxFrameDuration
@@ -577,6 +584,25 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
     
     //MARK: - Zoom Slider
     
+    
+    @objc func handleZoomChange(_ notification: Notification) {
+        guard let zoomValue = notification.userInfo?["zoomValue"] as? CGFloat else { return }
+        applyZoom(zoomValue: zoomValue)
+    }
+    
+    func applyZoom(zoomValue: CGFloat) {
+        guard let device = getCamera(for: currentCameraPosition) else { return }
+
+        do {
+            try device.lockForConfiguration()
+            let zoomFactor = min(max(zoomValue, 1.0), device.activeFormat.videoMaxZoomFactor)
+            device.videoZoomFactor = zoomFactor
+            device.unlockForConfiguration()
+        } catch {
+            print("Error locking configuration: \(error.localizedDescription)")
+        }
+    }
+    
     func setupZoomSlider() {
         // 슬라이더 생성
         zoomSlider = UISlider()
@@ -933,26 +959,4 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
             }
         }
     }
-}
-
-
-
-extension Notification.Name {
-    //메인뷰
-    static let didAddScript = Notification.Name("didAddScript")
-    
-    static let scriptViewFontSizeChanged = Notification.Name("scriptViewFontSizeChanged")
-    
-    static let scrollOptionChanged = Notification.Name("scrollOptionChanged")
-    
-    static let backgroundAlphaChanged = Notification.Name("backgroundAlphaChanged")
-    
-    static let scrollSpeedChanged = Notification.Name("scrollSpeedChanged")
-    
-    //블루투스 관련
-    static let didConnectToPeripheral = Notification.Name("didConnectToPeripheral")
-    static let didDisconnectFromPeripheral = Notification.Name("didDisconnectFromPeripheral")
-    static let toggleRecording = Notification.Name("toggleRecording")
-    static let didDiscoverPeripheral = Notification.Name("didDiscoverperipheral")
-    
 }

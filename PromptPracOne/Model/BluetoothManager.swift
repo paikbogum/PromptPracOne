@@ -13,6 +13,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralManagerD
     
     var discoveredPeripheral: CBPeripheral?
     var recordButtonCharacteristic: CBCharacteristic?
+    var switchButtonCharacteristic: CBCharacteristic?
     
     var isConnected: Bool = false
     
@@ -85,17 +86,26 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralManagerD
                     // 여기에서 recordButtonCharacteristic을 설정합니다.
                     self.recordButtonCharacteristic = characteristic as? CBMutableCharacteristic
                     peripheral.setNotifyValue(true, for: characteristic)
+                    
+                    self.switchButtonCharacteristic = characteristic as? CBMutableCharacteristic
+                    peripheral.setNotifyValue(true, for: characteristic)
                 }
             }
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        if characteristic.uuid == CBUUID(string: "FFE1"), let value = characteristic.value, let command = String(data: value, encoding: .utf8), command == "toggle" {
-            NotificationCenter.default.post(name: .toggleRecording, object: nil)
+        if characteristic.uuid == CBUUID(string: "FFE1"), let value = characteristic.value, let command = String(data: value, encoding: .utf8) {
+            switch command {
+            case "toggle":
+                NotificationCenter.default.post(name: .toggleRecording, object: nil)
+            case "toggleCamera":
+                NotificationCenter.default.post(name: .toggleCamera, object: nil)
+            default:
+                break
+            }
         }
     }
-    
     // MARK: - Peripheral Manager Delegate Methods
     
     func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {

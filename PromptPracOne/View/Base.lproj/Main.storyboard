@@ -491,6 +491,9 @@
                                 <state key="normal">
                                     <imageReference key="image" image="tray.full.fill" catalog="system" symbolScale="large"/>
                                 </state>
+                                <connections>
+                                    <action selector="cameraSwitchButtonTapped:" destination="jkf-kA-rgc" eventType="touchUpInside" id="PPI-Hn-Ydd"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="fJb-YD-xoz"/>

@@ -13,6 +13,4 @@ class PeripheralView: UIView {
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var cameraSwitchButton: UIButton!
-    
-    
 }
