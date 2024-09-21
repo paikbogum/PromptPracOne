@@ -47,12 +47,9 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         setupSession()
         setupZoomSlider()
         setupProgressBar()
-        //setAllIn()
         onScriptReceived?()
         recordingView.bluetoothButton.tintColor = .white
-        // Bluetooth Manager 초기화 (Central)
-        //BluetoothManager.shared.initializeCentralManager()
-        
+
         // Notification 설정
         NotificationCenter.default.addObserver(self, selector: #selector(toggleRecording), name: .toggleRecording, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didConnectToPeripheral), name: .didConnectToPeripheral, object: nil)
@@ -84,25 +81,38 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         NotificationCenter.default.addObserver(self, selector: #selector(switchCameraTapped(_:)), name: .toggleCamera, object: nil)
         // 줌 제어 명령을 받기 위한 Notification
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handlePinchGesture(_:)), name: .zoomCamera, object: nil)
+        // NotificationCenter를 사용해 블루투스로부터 줌 명령을 수신
+        NotificationCenter.default.addObserver(self, selector: #selector(handleZoomCommand(_:)), name: .didReceiveZoomCommand, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(qualityButtonTapped), name: .toggleQuality, object: nil)
+        
+        // 장치 방향 변경 감지
+        NotificationCenter.default.addObserver(self, selector: #selector(handleDeviceOrientationChange), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     deinit {
         NotificationCenter.default.removeObserver(self, name: .toggleRecording, object: nil)
         NotificationCenter.default.removeObserver(self, name: .toggleCamera, object: nil)
-        
     }
     
     
-    func setAllIn() {
-        loadSettings {
-            self.setupUI()
-            self.prepareScriptLines()
-            self.updateScriptView()
-        }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // 프레임을 업데이트하여 previewView의 크기와 맞춥니다.
+        videoPreviewLayer?.frame = recordingView.previewView.bounds
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // 화면이 나타난 후에 방향을 업데이트
+        updatePreviewLayerRotation()
+        // 프레임을 업데이트하여 previewView의 크기와 맞춥니다.
+        videoPreviewLayer?.frame = recordingView.previewView.bounds
     }
     
     @objc func updateTableView() {
-        deviceTableView.reloadData()
+        if let deviceTableView = deviceTableView {
+            deviceTableView.reloadData()
+        }
     }
     
     
@@ -110,6 +120,7 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
     func prepareScriptLines() {
         // 먼저 UITextView에 전체 텍스트를 설정
         recordingView.scriptTextView.text = recordingManager.scriptText
+        BluetoothManager.shared.receiveScript = recordingManager.scriptText
         
         // 실제로 몇 줄로 표시되는지 계산하여 scriptLines 배열에 추가
         let layoutManager = recordingView.scriptTextView.layoutManager
@@ -135,6 +146,14 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         print("Calculated scriptLines: \(recordingManager.scriptLines.count) lines")
     }
     
+    func setAllIn() {
+         loadSettings {
+             self.setupUI()
+             self.prepareScriptLines()
+             self.updateScriptView()
+         }
+     }
+    
     func setupUI() {
         recordingView.setupCountdownLabel()
         recordingView.setInitialButtonUI()
@@ -155,7 +174,7 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
             print("Error: No video camera available")
             return
         }
-        
+    
         do {
             let videoInput = try AVCaptureDeviceInput(device: camera)
             if captureSession.canAddInput(videoInput) {
@@ -194,6 +213,7 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         videoPreviewLayer?.videoGravity = .resizeAspectFill
         videoPreviewLayer?.frame = recordingView.previewView.bounds
         recordingView.previewView.layer.addSublayer(videoPreviewLayer!)
+        
         
         DispatchQueue.global(qos: .userInitiated).async {
             self.captureSession.startRunning()
@@ -241,7 +261,47 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
                 self.recordingView.qualityButton.setTitle("HD \(minFrameRate)", for: .normal)
             }
         }
+        
     }
+    
+    // 장치 방향 변경 감지 핸들러
+    @objc func handleDeviceOrientationChange() {
+        updatePreviewLayerRotation()
+    }
+    
+    // 미리보기 레이어의 회전 각도 업데이트
+    func updatePreviewLayerRotation() {
+        guard let videoPreviewLayer = videoPreviewLayer else { return }
+
+        let currentOrientation = getCurrentInterfaceOrientation()
+        var rotationAngle: CGFloat = 0
+
+        switch currentOrientation {
+        case .landscapeLeft:
+            rotationAngle = CGFloat(Double.pi / 2)
+        case .landscapeRight:
+            rotationAngle = -CGFloat(Double.pi / 2)
+        case .portraitUpsideDown:
+            rotationAngle = CGFloat(Double.pi)
+        case .portrait, .unknown:
+            rotationAngle = 0
+        default:
+            rotationAngle = 0
+        }
+
+        // 회전 각도를 미리보기 레이어에 적용
+        videoPreviewLayer.setAffineTransform(CGAffineTransform(rotationAngle: rotationAngle))
+    }
+    
+    // 현재 인터페이스 방향을 얻는 메서드
+    func getCurrentInterfaceOrientation() -> UIInterfaceOrientation {
+        if let windowScene = view.window?.windowScene {
+            return windowScene.interfaceOrientation
+        }
+        return .unknown
+    }
+    
+ 
     
     @objc func toggleRecording() {
         guard let videoOutput = recordingManager.videoOutput else {
@@ -339,7 +399,6 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
             if recordingManager.scriptLines.count > 5 {
                 recordingManager.scriptTimer = Timer.scheduledTimer(timeInterval: scrollSpeed, target: self, selector: #selector(scrollScript), userInfo: nil, repeats: true)
                 print("Function 1 Script scrolling started.")
-                
             } else {
                 scrollScript()
             }
@@ -443,7 +502,6 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         
         UIView.animate(withDuration: scrollDuration, delay: 0, options: .curveLinear, animations: {
             self.recordingView.scriptTextView.setContentOffset(CGPoint(x: .zero, y: totalScrollHeight), animated: false)
-            
             self.updateProgressBar()
         }, completion: { finished in
             if finished {
@@ -513,9 +571,18 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
     
     @objc func didConnectToPeripheral() {
         if BluetoothManager.shared.isConnected {
-            recordingView.bluetoothButton.tintColor = .red
+            if let originalImage = UIImage(named: "bluetooth") {
+                let resizedImage = originalImage.resize(to: CGSize(width: 25, height: 25)) // 원하는 크기로 이미지 변경
+                recordingView.bluetoothButton.setImage(resizedImage, for: .normal)
+                recordingView.bluetoothButton.imageView?.contentMode = .center
+            }
         } else {
-            recordingView.bluetoothButton.tintColor = .white
+            if let originalImage = UIImage(named: "bluetoothNot") {
+                let resizedImage = originalImage.resize(to: CGSize(width: 25, height: 25)) // 원하는 크기로 이미지 변경
+                recordingView.bluetoothButton.setImage(resizedImage, for: .normal)
+                recordingView.bluetoothButton.imageView?.contentMode = .center
+            }
+
         }
         
         dismissOverlayView()
@@ -758,6 +825,32 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         }
     }
     
+    @objc func handleZoomCommand(_ notification: Notification) {
+        guard let zoomIn = notification.userInfo?["zoomIn"] as? Bool else { return }
+        adjustZoom(zoomIn: zoomIn)
+    }
+    
+    func adjustZoom(zoomIn: Bool) {
+        guard let device = getCamera(for: currentCameraPosition) else { return }
+
+        do {
+            try device.lockForConfiguration()
+            let currentZoom = device.videoZoomFactor
+            let maxZoom = device.activeFormat.videoMaxZoomFactor
+            let zoomFactor: CGFloat = 1.0
+
+            if zoomIn {
+                device.videoZoomFactor = min(currentZoom + zoomFactor, maxZoom)
+            } else {
+                device.videoZoomFactor = max(currentZoom - zoomFactor, 1.0)
+            }
+
+            device.unlockForConfiguration()
+        } catch {
+            print("Error locking configuration: \(error.localizedDescription)")
+        }
+    }
+    
     //MARK: - Script Progress Bar
     
     // UIProgressView 설정
@@ -792,13 +885,9 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
     }
     
     
-    
-    
-    
     //MARK: -  Camera Quality
     @objc func qualityButtonTapped() {
         isHD60Selected.toggle() // 현재 상태를 토글
-        
         if isHD60Selected {
             configureSession(for: .hd60)
             recordingView.qualityButton.setTitle("HD 60", for: .normal)

@@ -33,6 +33,7 @@ class MainViewController: UIViewController, ScriptTableViewCellDelegate {
     
     func setUI() {
         mainView.backgroundColor = .black
+        
         mainView.setTableViewUI()
         
     }

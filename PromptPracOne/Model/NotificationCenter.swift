@@ -25,4 +25,6 @@ extension Notification.Name {
     static let toggleRecording = Notification.Name("toggleRecording")
     static let didDiscoverPeripheral = Notification.Name("didDiscoverperipheral")
     static let toggleCamera = Notification.Name("toggleCamera")
+    static let didReceiveZoomCommand = Notification.Name("didReceiveZoomCommand")
+    static let toggleQuality = Notification.Name("toggleQuality")
 }

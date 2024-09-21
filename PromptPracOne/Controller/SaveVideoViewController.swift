@@ -8,14 +8,17 @@
 import UIKit
 import Photos
 import AVFoundation
+import GoogleMobileAds
 
-class SaveVideoViewController: UIViewController {
+class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
     @IBOutlet var saveView: SaveView!
     
     var videoModel: VideoModel?
     private var player: AVPlayer?
     private var playerLayer: AVPlayerLayer?
     private var isPlaying = false // 현재 재생 상태를 추적
+    
+    private var rewardedAd: GADRewardedAd?
 
 
     override func viewDidLoad() {
@@ -25,6 +28,7 @@ class SaveVideoViewController: UIViewController {
         setupVideoPlayer()
         setupEndNotification()
         setupTimeObserver()
+        loadRewardedAd()
         //setupTapGesture() // 탭 제스처 설정
     }
     
@@ -38,7 +42,7 @@ class SaveVideoViewController: UIViewController {
         guard let playerLayer = playerLayer else { return }
         playerLayer.frame = saveView.videoContainerView.bounds
         playerLayer.videoGravity = .resizeAspectFill
-        
+         
         // 좌우 반전 적용
         playerLayer.setAffineTransform(CGAffineTransform(scaleX: -1.0, y: 1.0))
         
@@ -57,7 +61,6 @@ class SaveVideoViewController: UIViewController {
             saveView.currentTimeLabel.isHidden = false
             player?.play()
             saveView.playPauseButton.setImage(UIImage(systemName: "stop.fill"), for: .normal)
-            
         }
         isPlaying.toggle()
     }
@@ -72,11 +75,36 @@ class SaveVideoViewController: UIViewController {
         isPlaying = false
         saveView.currentTimeLabel.isHidden = true
     }
+    
+    func loadRewardedAd() {
+        //현재는 테스트 id임 바꿔야함
+        let adUnitID = "ca-app-pub-3940256099942544/1712485313" // 애드몹에서 생성한 광고 단위 ID
+        GADRewardedAd.load(withAdUnitID: adUnitID, request: GADRequest()) { ad, error in
+            if let error = error {
+                print("Failed to load rewarded ad with error: \(error.localizedDescription)")
+                return
+            }
+            self.rewardedAd = ad
+            self.rewardedAd?.fullScreenContentDelegate = self
+        }
+    }
+    
   
     
     @IBAction func saveButtonTapped(_ sender: UIButton) {
+        if let ad = rewardedAd {
+            ad.present(fromRootViewController: self) {
+                // 광고를 끝까지 시청했을 때 실행되는 코드
+                print("광고 끝")
+            }
+        } else {
+            print("Rewarded ad wasn't ready.")
+        }
+    }
+    
+    func saveVideoToGallery() {
         guard let videoURL = videoModel?.videoURL else { return }
-
+        
         // 갤러리에 비디오 저장
         PHPhotoLibrary.shared().performChanges({
             PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: videoURL)
@@ -107,7 +135,7 @@ class SaveVideoViewController: UIViewController {
         // 레이아웃 변경에 따라 플레이어 레이어 크기 업데이트
         playerLayer?.frame = saveView.videoContainerView.bounds
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         player?.pause() // 뷰가 사라질 때 비디오 재생을 멈춤
@@ -130,6 +158,10 @@ class SaveVideoViewController: UIViewController {
         return String(format: "%02d:%02d", mins, secs)
     }
     
-
-
+    // GADFullScreenContentDelegate 메서드
+    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        //loadRewardedAd() // 새로운 광고를 로드
+        self.saveVideoToGallery()
+    }
+    
 }

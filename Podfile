@@ -8,7 +8,7 @@ target 'PromptPracOne' do
   # Pods for PromptPracOne
 
 
-
+pod 'Google-Mobile-Ads-SDK'
 
 
 end

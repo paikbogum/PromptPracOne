@@ -59,7 +59,9 @@
                                     <constraint firstAttribute="width" secondItem="T7g-MK-OWC" secondAttribute="height" multiplier="1:1" id="rmi-UZ-Mqu"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="link" catalog="system"/>
+                                <state key="normal">
+                                    <imageReference key="image" image="link" catalog="system" symbolScale="default"/>
+                                </state>
                                 <connections>
                                     <action selector="bluetoothButtonTapped:" destination="Vgy-Bo-U6O" eventType="touchUpInside" id="BGf-d4-n3I"/>
                                 </connections>
@@ -80,6 +82,7 @@
                             <constraint firstItem="8EG-Dd-cDa" firstAttribute="top" secondItem="Ok5-1I-An3" secondAttribute="top" constant="60" id="uny-ew-Tf7"/>
                         </constraints>
                         <connections>
+                            <outlet property="bluetoothButton" destination="T7g-MK-OWC" id="uo2-B3-qHC"/>
                             <outlet property="mainLabel" destination="ZA1-M9-of6" id="aYm-OE-IT7"/>
                             <outlet property="scriptTableView" destination="8EG-Dd-cDa" id="pOB-Ff-bZ0"/>
                         </connections>
@@ -237,7 +240,7 @@
                                     <constraint firstAttribute="width" constant="50" id="hIY-7O-vTW"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="arrow.triangle.2.circlepath" catalog="system"/>
+                                <state key="normal" image="camera.rotate" catalog="system"/>
                                 <connections>
                                     <action selector="switchCameraTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zWi-IR-4zp"/>
                                 </connections>
@@ -253,10 +256,12 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wYe-Hk-A2E">
                                 <rect key="frame" x="15" y="64" width="35" height="35"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="wYe-Hk-A2E" secondAttribute="height" multiplier="1:1" id="rwJ-3k-a9W"/>
+                                    <constraint firstAttribute="width" secondItem="wYe-Hk-A2E" secondAttribute="height" multiplier="1:1" id="brk-q7-9ek"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="link" catalog="system"/>
+                                <state key="normal">
+                                    <imageReference key="image" image="bluetoothNot"/>
+                                </state>
                                 <connections>
                                     <action selector="bluetoothButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="s8o-z8-808"/>
                                 </connections>
@@ -265,7 +270,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="yIa-Hv-Vny" secondAttribute="trailing" id="10V-EZ-Am5"/>
+                            <constraint firstAttribute="trailing" secondItem="yIa-Hv-Vny" secondAttribute="trailing" id="10V-EZ-Am5"/>
                             <constraint firstItem="yIa-Hv-Vny" firstAttribute="top" secondItem="wYe-Hk-A2E" secondAttribute="bottom" constant="5" id="93A-H7-lgm"/>
                             <constraint firstItem="Pgt-3w-ddr" firstAttribute="top" secondItem="yIa-Hv-Vny" secondAttribute="bottom" constant="10" id="E4u-RX-ld5"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="VMv-NL-hai" secondAttribute="bottom" constant="40" id="Fvz-pM-0aa"/>
@@ -278,7 +283,7 @@
                             <constraint firstItem="Pgt-3w-ddr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Smk-Lr-taj"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="XPw-3t-0WN" secondAttribute="trailing" constant="15" id="Use-qj-9Sz"/>
                             <constraint firstItem="wYe-Hk-A2E" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="VVA-Ta-VM3"/>
-                            <constraint firstItem="yIa-Hv-Vny" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ccd-8i-MbI"/>
+                            <constraint firstItem="yIa-Hv-Vny" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ccd-8i-MbI"/>
                             <constraint firstItem="pAF-S0-e5k" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="eQb-bV-uEl"/>
                             <constraint firstItem="yIa-Hv-Vny" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="45" id="fTY-CZ-SDb"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ahy-4a-Hp3" secondAttribute="trailing" constant="20" id="g4S-Xw-T2l"/>
@@ -458,58 +463,135 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DoQ-Ha-DdW">
-                                <rect key="frame" x="171.66666666666666" y="401" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="GHA-2o-y3z"/>
-                                    <constraint firstAttribute="height" constant="50" id="cdI-CW-OdS"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal">
-                                    <imageReference key="image" image="play.circle.fill" catalog="system" symbolScale="large"/>
-                                </state>
-                                <connections>
-                                    <action selector="recordButtonTapped:" destination="jkf-kA-rgc" eventType="touchUpInside" id="JDQ-f0-r9s"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mOL-I4-Aer">
-                                <rect key="frame" x="176" y="159" width="41.333333333333343" height="25"/>
+                                <rect key="frame" x="40" y="79" width="313" height="60"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="25" id="Oqo-6z-bam"/>
+                                    <constraint firstAttribute="height" constant="60" id="Oqo-6z-bam"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K3g-fL-pye">
-                                <rect key="frame" x="171.66666666666666" y="331" width="50" height="50"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ACp-dF-9GN">
+                                <rect key="frame" x="20" y="294" width="353" height="464"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Qy-ho-i9c">
+                                        <rect key="frame" x="141.66666666666666" y="307" width="70" height="70"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="70" id="pHc-os-i6e"/>
+                                            <constraint firstAttribute="width" constant="70" id="pKv-NJ-Lse"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <imageReference key="image" image="camera.aperture" catalog="system" symbolScale="large"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="qualityButtonTapped:" destination="jkf-kA-rgc" eventType="touchUpInside" id="YiH-zh-vNA"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18Y-H7-oGs">
+                                        <rect key="frame" x="31.666666666666657" y="197" width="70" height="70"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="70" id="74T-9m-pZ5"/>
+                                            <constraint firstAttribute="width" constant="70" id="XSh-Pf-7Jm"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal">
+                                            <imageReference key="image" image="minus" catalog="system" symbolScale="large"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="zoomOutButtonTapped:" destination="jkf-kA-rgc" eventType="touchUpInside" id="BX8-wm-rJO"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sI4-hK-FsX">
+                                        <rect key="frame" x="251.66666666666669" y="197" width="70" height="70"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="70" id="UMH-7i-2b9"/>
+                                            <constraint firstAttribute="width" constant="70" id="wHW-SK-Dad"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal">
+                                            <imageReference key="image" image="plus" catalog="system" symbolScale="large"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="zoomInButtonTapped:" destination="jkf-kA-rgc" eventType="touchUpInside" id="wqq-Pt-u59"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K3g-fL-pye">
+                                        <rect key="frame" x="141.66666666666666" y="87" width="70" height="70"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="70" id="Hrw-Jh-nBb"/>
+                                            <constraint firstAttribute="width" constant="70" id="NfN-fR-4pa"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal">
+                                            <imageReference key="image" image="arrow.triangle.2.circlepath.camera" catalog="system" symbolScale="large"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="cameraSwitchButtonTapped:" destination="jkf-kA-rgc" eventType="touchUpInside" id="PPI-Hn-Ydd"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DoQ-Ha-DdW">
+                                        <rect key="frame" x="141.66666666666666" y="197" width="70" height="70"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="70" id="GHA-2o-y3z"/>
+                                            <constraint firstAttribute="height" constant="70" id="cdI-CW-OdS"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <connections>
+                                            <action selector="recordButtonTapped:" destination="jkf-kA-rgc" eventType="touchUpInside" id="JDQ-f0-r9s"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="Hrw-Jh-nBb"/>
-                                    <constraint firstAttribute="width" constant="50" id="NfN-fR-4pa"/>
+                                    <constraint firstItem="9Qy-ho-i9c" firstAttribute="top" secondItem="DoQ-Ha-DdW" secondAttribute="bottom" constant="40" id="2Uz-Ds-GiE"/>
+                                    <constraint firstItem="DoQ-Ha-DdW" firstAttribute="centerX" secondItem="ACp-dF-9GN" secondAttribute="centerX" id="4eg-4I-EaJ"/>
+                                    <constraint firstItem="18Y-H7-oGs" firstAttribute="centerY" secondItem="ACp-dF-9GN" secondAttribute="centerY" id="AIH-tP-Fnz"/>
+                                    <constraint firstItem="sI4-hK-FsX" firstAttribute="leading" secondItem="DoQ-Ha-DdW" secondAttribute="trailing" constant="40" id="HHd-6j-A5O"/>
+                                    <constraint firstItem="DoQ-Ha-DdW" firstAttribute="centerY" secondItem="ACp-dF-9GN" secondAttribute="centerY" id="NB9-2D-1Pa"/>
+                                    <constraint firstItem="K3g-fL-pye" firstAttribute="centerX" secondItem="ACp-dF-9GN" secondAttribute="centerX" id="SdE-Jh-mgc"/>
+                                    <constraint firstItem="DoQ-Ha-DdW" firstAttribute="leading" secondItem="18Y-H7-oGs" secondAttribute="trailing" constant="40" id="cMd-fZ-XPf"/>
+                                    <constraint firstItem="9Qy-ho-i9c" firstAttribute="centerX" secondItem="ACp-dF-9GN" secondAttribute="centerX" id="dxu-An-6w3"/>
+                                    <constraint firstItem="DoQ-Ha-DdW" firstAttribute="top" secondItem="K3g-fL-pye" secondAttribute="bottom" constant="40" id="ihz-J7-mYJ"/>
+                                    <constraint firstItem="sI4-hK-FsX" firstAttribute="centerY" secondItem="ACp-dF-9GN" secondAttribute="centerY" id="lxW-fR-2g8"/>
                                 </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal">
-                                    <imageReference key="image" image="tray.full.fill" catalog="system" symbolScale="large"/>
-                                </state>
-                                <connections>
-                                    <action selector="cameraSwitchButtonTapped:" destination="jkf-kA-rgc" eventType="touchUpInside" id="PPI-Hn-Ydd"/>
-                                </connections>
-                            </button>
+                            </view>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="xqF-Pt-F58">
+                                <rect key="frame" x="20" y="154" width="353" height="120"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="Kma-Mk-DoF"/>
+                                </constraints>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="fJb-YD-xoz"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="DoQ-Ha-DdW" firstAttribute="centerX" secondItem="6Gv-m1-kTC" secondAttribute="centerX" id="5vt-mc-sfY"/>
-                            <constraint firstItem="DoQ-Ha-DdW" firstAttribute="centerY" secondItem="6Gv-m1-kTC" secondAttribute="centerY" id="8rs-Km-45V"/>
-                            <constraint firstItem="mOL-I4-Aer" firstAttribute="centerX" secondItem="6Gv-m1-kTC" secondAttribute="centerX" id="Jsl-KN-U5h"/>
-                            <constraint firstItem="mOL-I4-Aer" firstAttribute="top" secondItem="fJb-YD-xoz" secondAttribute="top" constant="100" id="Teb-BC-kvC"/>
-                            <constraint firstItem="DoQ-Ha-DdW" firstAttribute="top" secondItem="K3g-fL-pye" secondAttribute="bottom" constant="20" id="h5d-e1-vaO"/>
-                            <constraint firstItem="K3g-fL-pye" firstAttribute="centerX" secondItem="6Gv-m1-kTC" secondAttribute="centerX" id="o51-Ex-6tz"/>
+                            <constraint firstItem="mOL-I4-Aer" firstAttribute="leading" secondItem="fJb-YD-xoz" secondAttribute="leading" constant="40" id="BlB-eW-k2R"/>
+                            <constraint firstItem="ACp-dF-9GN" firstAttribute="top" secondItem="xqF-Pt-F58" secondAttribute="bottom" constant="20" id="HcV-Be-sjg"/>
+                            <constraint firstItem="xqF-Pt-F58" firstAttribute="leading" secondItem="fJb-YD-xoz" secondAttribute="leading" constant="20" id="Lbv-Hf-gFb"/>
+                            <constraint firstItem="mOL-I4-Aer" firstAttribute="top" secondItem="fJb-YD-xoz" secondAttribute="top" constant="20" id="Teb-BC-kvC"/>
+                            <constraint firstItem="ACp-dF-9GN" firstAttribute="leading" secondItem="fJb-YD-xoz" secondAttribute="leading" constant="20" id="c0y-eT-qBD"/>
+                            <constraint firstItem="fJb-YD-xoz" firstAttribute="bottom" secondItem="ACp-dF-9GN" secondAttribute="bottom" constant="60" id="hNl-y0-TIr"/>
+                            <constraint firstItem="fJb-YD-xoz" firstAttribute="trailing" secondItem="ACp-dF-9GN" secondAttribute="trailing" constant="20" id="kQZ-BW-cKM"/>
+                            <constraint firstItem="fJb-YD-xoz" firstAttribute="trailing" secondItem="xqF-Pt-F58" secondAttribute="trailing" constant="20" id="omf-8c-UtS"/>
+                            <constraint firstItem="fJb-YD-xoz" firstAttribute="trailing" secondItem="mOL-I4-Aer" secondAttribute="trailing" constant="40" id="rFL-20-auA"/>
+                            <constraint firstItem="xqF-Pt-F58" firstAttribute="top" secondItem="mOL-I4-Aer" secondAttribute="bottom" constant="15" id="xNb-sI-Zsj"/>
                         </constraints>
                         <connections>
                             <outlet property="cameraSwitchButton" destination="K3g-fL-pye" id="VRs-js-ecr"/>
+                            <outlet property="mainUIView" destination="ACp-dF-9GN" id="snm-Hz-AQ6"/>
+                            <outlet property="qualityButton" destination="9Qy-ho-i9c" id="L4R-Ww-uab"/>
                             <outlet property="recordButton" destination="DoQ-Ha-DdW" id="3xO-5c-P2i"/>
+                            <outlet property="scriptTextView" destination="xqF-Pt-F58" id="jPG-L0-v5H"/>
                             <outlet property="statusLabel" destination="mOL-I4-Aer" id="Uz6-4h-Ipq"/>
+                            <outlet property="zoomInButton" destination="sI4-hK-FsX" id="elG-yf-QtP"/>
+                            <outlet property="zoomOutButton" destination="18Y-H7-oGs" id="25s-Og-4RK"/>
                         </connections>
                     </view>
                     <connections>
@@ -768,15 +850,18 @@
     </scenes>
     <resources>
         <image name="a" catalog="system" width="128" height="128"/>
-        <image name="arrow.triangle.2.circlepath" catalog="system" width="128" height="104"/>
+        <image name="arrow.triangle.2.circlepath.camera" catalog="system" width="128" height="93"/>
+        <image name="bluetoothNot" width="128" height="128"/>
+        <image name="camera.aperture" catalog="system" width="128" height="123"/>
+        <image name="camera.rotate" catalog="system" width="128" height="93"/>
         <image name="eyes.inverse" catalog="system" width="128" height="98"/>
         <image name="gearshape.fill" catalog="system" width="128" height="123"/>
         <image name="link" catalog="system" width="128" height="124"/>
-        <image name="play.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="minus" catalog="system" width="128" height="26"/>
         <image name="play.fill" catalog="system" width="117" height="128"/>
+        <image name="plus" catalog="system" width="128" height="113"/>
         <image name="return.left" catalog="system" width="128" height="102"/>
         <image name="tray.and.arrow.down" catalog="system" width="128" height="117"/>
-        <image name="tray.full.fill" catalog="system" width="128" height="88"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

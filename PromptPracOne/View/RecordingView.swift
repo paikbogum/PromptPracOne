@@ -44,11 +44,18 @@ class RecordingView: UIView {
         recordButton.layer.cornerRadius = recordButton.frame.size.width / 2
         recordButton.layer.borderWidth = 1.0
         recordButton.layer.borderColor = UIColor.white.cgColor
-    }
+        
+        if let originalImage = UIImage(named: "bluetoothNot") {
+            let resizedImage = originalImage.resize(to: CGSize(width: 25, height: 25)) // 원하는 크기로 이미지 변경
+            bluetoothButton.setImage(resizedImage, for: .normal)
+            bluetoothButton.imageView?.contentMode = .center
+            }
+       }
     
     func setStopButtonUI() {
         let largeConfig = UIImage.SymbolConfiguration(scale: .large)
         let largeImage = UIImage(systemName: "stop.fill")?.withConfiguration(largeConfig)
+        
         
         recordButton.backgroundColor = .clear
         recordButton.clipsToBounds = true
@@ -57,7 +64,7 @@ class RecordingView: UIView {
         recordButton.layer.borderColor = UIColor.white.cgColor
         recordButton.setImage(largeImage, for: .normal)
         recordButton.tintColor = .red
-
+    
     }
     
     

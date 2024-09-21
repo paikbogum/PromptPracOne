@@ -13,12 +13,15 @@ class MainView: UIView {
     
     @IBOutlet weak var mainLabel: UILabel!
     
+    @IBOutlet weak var bluetoothButton: UIButton!
+    
     func setTableViewUI() {
         mainLabel.font = UIFont.boldSystemFont(ofSize: 25)
         mainLabel.textColor = .white
         mainLabel.text = "전체 프로젝트"
         
         scriptTableView.backgroundColor = .clear
+        bluetoothButton.tintColor = .white
     }
     
     

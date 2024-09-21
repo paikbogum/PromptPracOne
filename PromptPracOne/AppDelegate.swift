@@ -6,14 +6,40 @@
 //
 
 import UIKit
+import GoogleMobileAds
+import AppTrackingTransparency
+import AdSupport
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        //애드몹
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
+        
+        
+        // 앱 추적 권한 요청
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            if #available(iOS 14, *) {
+                ATTrackingManager.requestTrackingAuthorization { status in
+                    switch status {
+                    case .authorized:           // 허용됨
+                        print("Authorized")
+                        print("IDFA = \(ASIdentifierManager.shared().advertisingIdentifier)")
+                    case .denied:               // 거부됨
+                        print("Denied")
+                    case .notDetermined:        // 결정되지 않음
+                        print("Not Determined")
+                    case .restricted:           // 제한됨
+                        print("Restricted")
+                    @unknown default:           // 알려지지 않음
+                        print("Unknow")
+                    }
+                }
+            }
+        }
+       
         return true
     }
 
