@@ -609,9 +609,18 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         deviceTableView.dataSource = self
         deviceTableView.register(UINib(nibName: "CentralTableViewCell", bundle: nil), forCellReuseIdentifier: "CentralTableViewCell")
         
+        // 취소 버튼 추가
+        let cancelButton = UIButton(frame: CGRect(x: 0, y: 60, width: 60, height: 30))
+            cancelButton.setTitle("취소", for: .normal)
+            cancelButton.setTitleColor(.black, for: .normal)
+            cancelButton.backgroundColor = UIColor.white
+            cancelButton.layer.cornerRadius = 5
+            cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        
         overlayView.addSubview(activityIndicator)
         overlayView.addSubview(label)
         overlayView.addSubview(deviceTableView)
+        overlayView.addSubview(cancelButton)
         
         view.addSubview(overlayView)
     }
@@ -620,6 +629,11 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         if overlayView.superview != nil {
             overlayView.removeFromSuperview()
         }
+    }
+    
+    @objc func cancelButtonTapped() {
+        // 오버레이 뷰 제거
+        overlayView.removeFromSuperview()
     }
     
     // MARK: - UITableViewDataSource Methods
@@ -632,7 +646,14 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         let cell = tableView.dequeueReusableCell(withIdentifier: "CentralTableViewCell", for: indexPath) as! CentralTableViewCell
         
         let device = BluetoothManager.shared.discoveredDevices[indexPath.row]
-        cell.deviceName.text = device.peripheral.name ?? "unknown"
+        if BluetoothManager.shared.isConnected {
+            cell.deviceName.text = device.peripheral.name ?? "unknown"
+            cell.connectedLabel.isHidden = false
+        } else {
+            cell.deviceName.text = device.peripheral.name ?? "unknown"
+            cell.connectedLabel.isHidden = true
+        }
+ 
         
         return cell
     }
@@ -646,6 +667,10 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         BluetoothManager.shared.connectToPeripheral(selectedPeripheral)
         
         //dismissOverlayView() // 기기를 선택한 후 오버레이 뷰 제거
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60.0
     }
     
     

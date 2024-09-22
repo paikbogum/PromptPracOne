@@ -8,7 +8,9 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralManagerD
     var receiveScript: String?
     
     var discoveredDevices: [(peripheral: CBPeripheral, rssi: NSNumber)] = []
-    var connectedDeviceName: String? // 연결된 기기의 이름을 저장
+    
+    var connectedDeviceName: String?
+    var connectedCentralDeviceName: (central: CBCentral?, rssi: NSNumber?)
     
     var centralManager: CBCentralManager!
     var peripheralManager: CBPeripheralManager!
@@ -19,6 +21,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralManagerD
     var qualityButtonCharacteristic: CBCharacteristic?
     
     var scriptCharacteristic: CBCharacteristic?
+    var centralDeviceNameCharacteristic: CBCharacteristic?
 
     var isConnected: Bool = false
     
@@ -135,10 +138,20 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralManagerD
     }
     
     func sendScript(_ script: String) {
-        guard let characteristic = scriptCharacteristic, let data = script.data(using: .utf8) else {
+        let scriptWithIdentifier = "script:" + script // "script:"를 추가하여 구분
+        guard let characteristic = scriptCharacteristic, let data = scriptWithIdentifier.data(using: .utf8) else {
             return
         }
         discoveredPeripheral?.writeValue(data, for: characteristic, type: .withResponse)
+    }
+    
+    func sendDeviceNameToPeripheral() {
+        let deviceName = UIDevice.current.name
+        let nameWithIdentifier = "name:" + deviceName // "name:"을 추가하여 구분
+        guard let nameCharacteristic = centralDeviceNameCharacteristic, let data = nameWithIdentifier.data(using: .utf8) else {
+            return
+        }
+        discoveredPeripheral?.writeValue(data, for: nameCharacteristic, type: .withResponse)
     }
 
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
@@ -156,7 +169,9 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralManagerD
                     peripheral.setNotifyValue(true, for: characteristic)
                     
                     scriptCharacteristic = characteristic
+                    centralDeviceNameCharacteristic = characteristic
                     sendScript(receiveScript ?? "no script")
+                    sendDeviceNameToPeripheral()
                 }
             }
         }

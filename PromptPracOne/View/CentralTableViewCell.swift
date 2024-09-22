@@ -10,6 +10,9 @@ import UIKit
 class CentralTableViewCell: UITableViewCell {
 
     @IBOutlet weak var deviceName: UILabel!
+    
+    @IBOutlet weak var connectedLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -18,7 +21,11 @@ class CentralTableViewCell: UITableViewCell {
     
     func setCellUI() {
         deviceName.textColor = .white
+        deviceName.font = UIFont.boldSystemFont(ofSize: 17)
         contentView.backgroundColor = .clear
+        connectedLabel.textColor = .lightGray
+        connectedLabel.font = UIFont.systemFont(ofSize: 12)
+        connectedLabel.isHidden = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

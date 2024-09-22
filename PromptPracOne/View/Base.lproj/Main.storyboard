@@ -404,57 +404,6 @@
             </objects>
             <point key="canvasLocation" x="2347.3282442748091" y="0.0"/>
         </scene>
-        <!--Central View Controller-->
-        <scene sceneID="NsE-Oo-ahA">
-            <objects>
-                <viewController storyboardIdentifier="CentralViewController" id="D9o-Y5-jNc" customClass="CentralViewController" customModule="PromptPracOne" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="IFO-0C-0Xe" customClass="CentralView" customModule="PromptPracOne" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="블루투스 기기 목록" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YfH-QY-Pun">
-                                <rect key="frame" x="15.000000000000007" y="79" width="126.66666666666669" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="dI5-Ld-2Pn">
-                                <rect key="frame" x="15" y="115" width="363" height="643"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="1Q4-Ky-YvE">
-                                        <rect key="frame" x="0.0" y="50" width="363" height="44.666667938232422"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1Q4-Ky-YvE" id="U7c-bF-5oX">
-                                            <rect key="frame" x="0.0" y="0.0" width="363" height="44.666667938232422"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="7fE-h6-qDH"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="dI5-Ld-2Pn" firstAttribute="top" secondItem="YfH-QY-Pun" secondAttribute="bottom" constant="15" id="CeG-NN-0dR"/>
-                            <constraint firstItem="YfH-QY-Pun" firstAttribute="top" secondItem="7fE-h6-qDH" secondAttribute="top" constant="20" id="MU9-1a-Gbv"/>
-                            <constraint firstItem="dI5-Ld-2Pn" firstAttribute="leading" secondItem="7fE-h6-qDH" secondAttribute="leading" constant="15" id="TjU-0u-R7O"/>
-                            <constraint firstItem="7fE-h6-qDH" firstAttribute="bottom" secondItem="dI5-Ld-2Pn" secondAttribute="bottom" constant="60" id="adN-3O-2Zy"/>
-                            <constraint firstItem="YfH-QY-Pun" firstAttribute="leading" secondItem="7fE-h6-qDH" secondAttribute="leading" constant="15" id="wMs-3n-Gg5"/>
-                            <constraint firstItem="7fE-h6-qDH" firstAttribute="trailing" secondItem="dI5-Ld-2Pn" secondAttribute="trailing" constant="15" id="zgy-iW-PL2"/>
-                        </constraints>
-                        <connections>
-                            <outlet property="deviceTableView" destination="dI5-Ld-2Pn" id="ThU-uF-8QW"/>
-                        </connections>
-                    </view>
-                    <connections>
-                        <outlet property="centralView" destination="IFO-0C-0Xe" id="Nv0-S9-97C"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="EiA-7C-pgd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2347" y="676"/>
-        </scene>
         <!--Peripheral View Controller-->
         <scene sceneID="IAB-tA-qdu">
             <objects>
@@ -558,7 +507,7 @@
                                     <constraint firstItem="sI4-hK-FsX" firstAttribute="centerY" secondItem="ACp-dF-9GN" secondAttribute="centerY" id="lxW-fR-2g8"/>
                                 </constraints>
                             </view>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="xqF-Pt-F58">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="xqF-Pt-F58">
                                 <rect key="frame" x="20" y="154" width="353" height="120"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
