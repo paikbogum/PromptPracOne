@@ -565,8 +565,17 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
     }
     
     @IBAction func bluetoothButtonTapped(_ sender: UIButton) {
+        // overlayView는 항상 표시
         showOverlayView()
-        BluetoothManager.shared.initializeCentralManager()
+        
+        // 연결된 기기가 없을 때만 스캔 시작
+        if BluetoothManager.shared.isConnected {
+            print("이미 연결된 기기가 있습니다. 스캔을 시작하지 않습니다.")
+            // 여기서 연결된 기기 관련 UI 업데이트가 필요하면 추가할 수 있습니다.
+        } else {
+            // 연결된 기기가 없을 경우에만 스캔 시작
+            BluetoothManager.shared.initializeCentralManager()
+        }
     }
     
     @objc func didConnectToPeripheral() {
@@ -587,36 +596,57 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         
         dismissOverlayView()
     }
-    
+
     func showOverlayView() {
         // 오버레이 뷰 생성 및 설정
         overlayView = UIView(frame: view.bounds)
-        overlayView.backgroundColor = UIColor(white: 0.0, alpha: 0.7)
+        overlayView.backgroundColor = UIColor(white: 0.0, alpha: 0.9)
         
-        let activityIndicator = UIActivityIndicatorView(style: .large)
-        activityIndicator.center = CGPoint(x: overlayView.center.x, y: overlayView.center.y - 50)
-        activityIndicator.startAnimating()
+        // Cancel Button 설정 (safeArea에서 10 정도 띄우기)
+        let cancelButtonHeight: CGFloat = 50
+        let tableViewHeight: CGFloat = 250
+        let safeAreaBottomInset = view.safeAreaInsets.bottom
         
-        let label = UILabel(frame: CGRect(x: 0, y: overlayView.center.y + 20, width: overlayView.bounds.width, height: 50))
-        label.text = "주변 기기를 찾고 있습니다..."
-        label.textColor = .white
-        label.textAlignment = .center
+        let buttonWidth = overlayView.bounds.width - 40 // 버튼 너비는 전체 뷰 너비에서 리딩/트레일링 20씩 뺀 값
+        let cancelButton = UIButton(frame: CGRect(x: (overlayView.bounds.width - buttonWidth) / 2, y: overlayView.bounds.height - cancelButtonHeight - safeAreaBottomInset - 20, width: buttonWidth, height: cancelButtonHeight))
         
-        // UITableView 설정
-        deviceTableView = UITableView(frame: CGRect(x: 0, y: overlayView.center.y + 80, width: overlayView.bounds.width, height: overlayView.bounds.height / 2))
+        cancelButton.setTitle("닫기", for: .normal)
+        cancelButton.setTitleColor(CustomColor.backgroundColor.color, for: .normal)
+        cancelButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        cancelButton.backgroundColor = CustomColor.darkModeBackgroundColor.color
+        cancelButton.layer.cornerRadius = 5
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        
+        // UITableView 설정 (고정된 높이 250, 취소 버튼 위에 배치)
+        deviceTableView = UITableView(frame: CGRect(x: 0, y: cancelButton.frame.origin.y - tableViewHeight, width: overlayView.bounds.width, height: tableViewHeight))
         
         deviceTableView.delegate = self
         deviceTableView.dataSource = self
         deviceTableView.register(UINib(nibName: "CentralTableViewCell", bundle: nil), forCellReuseIdentifier: "CentralTableViewCell")
+        deviceTableView.backgroundColor = .clear
+        deviceTableView.layer.cornerRadius = 5
         
-        // 취소 버튼 추가
-        let cancelButton = UIButton(frame: CGRect(x: 0, y: 60, width: 60, height: 30))
-            cancelButton.setTitle("취소", for: .normal)
-            cancelButton.setTitleColor(.black, for: .normal)
-            cancelButton.backgroundColor = UIColor.white
-            cancelButton.layer.cornerRadius = 5
-            cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        // Activity Indicator 설정 (중앙에 배치)
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = CGPoint(x: overlayView.center.x, y: overlayView.center.y - 130)
         
+        // Label 설정 (Activity Indicator 위에 배치)
+        let label = UILabel(frame: CGRect(x: 0, y: overlayView.center.y - 80, width: overlayView.bounds.width, height: 50))
+        label.textColor = .white
+        label.textAlignment = .center
+        
+        // 이미 연결된 기기가 있는지 확인
+        if BluetoothManager.shared.isConnected {
+            label.text = "연결된 기기가 있습니다."
+            activityIndicator.stopAnimating() // 이미 연결된 경우 로딩 중지
+        } else {
+            label.text = "주변 기기를 찾고 있습니다..."
+            activityIndicator.startAnimating() // 연결된 기기가 없을 경우 로딩 시작
+            // 블루투스 스캔 시작 (이미 연결된 기기가 없을 때만 스캔)
+            BluetoothManager.shared.initializeCentralManager()
+        }
+
+        // 뷰에 추가
         overlayView.addSubview(activityIndicator)
         overlayView.addSubview(label)
         overlayView.addSubview(deviceTableView)
@@ -624,6 +654,7 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         
         view.addSubview(overlayView)
     }
+
     
     func dismissOverlayView() {
         if overlayView.superview != nil {
