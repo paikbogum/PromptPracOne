@@ -1,7 +1,7 @@
 import CoreBluetooth
 import UIKit
 
-class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate, CBPeripheralDelegate {
+class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     static let shared = BluetoothManager()
 
@@ -18,6 +18,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralManagerD
     var discoveredPeripheral: CBPeripheral?
     var recordButtonCharacteristic: CBCharacteristic?
     var switchButtonCharacteristic: CBCharacteristic?
+    var zoomButtonCharacteristic: CBCharacteristic?
     var qualityButtonCharacteristic: CBCharacteristic?
     
     var scriptCharacteristic: CBCharacteristic?
@@ -33,9 +34,10 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralManagerD
         centralManager = CBCentralManager(delegate: self, queue: nil)
     }
     
+    /*
     func initializePeripheralManager() {
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
-    }
+    }*/
     
     // MARK: - Central Manager Delegate Methods
 
@@ -132,7 +134,16 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralManagerD
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         if let services = peripheral.services {
             for service in services {
-                peripheral.discoverCharacteristics([CBUUID(string: "FFE1")], for: service)
+                // 여러 특성을 검색
+                let characteristicUUIDs = [
+                    CBUUID(string: "FFE1"),  // 녹화 버튼 특성
+                    CBUUID(string: "FFE2"),  // 카메라 전환 특성
+                    CBUUID(string: "FFE3"),  // 줌 특성
+                    CBUUID(string: "FFE4"),  // 화질 특성
+                    CBUUID(string: "FFE5"),  // 스크립트 특성
+                    CBUUID(string: "FFE6")   // 장치 이름 특성
+                ]
+                peripheral.discoverCharacteristics(characteristicUUIDs, for: service)
             }
         }
     }
@@ -162,15 +173,26 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralManagerD
                     self.recordButtonCharacteristic = characteristic as? CBMutableCharacteristic
                     peripheral.setNotifyValue(true, for: characteristic)
                     
+                } else if characteristic.uuid == CBUUID(string: "FFE2") {
+                    
                     self.switchButtonCharacteristic = characteristic as? CBMutableCharacteristic
                     peripheral.setNotifyValue(true, for: characteristic)
+                    
+                } else if characteristic.uuid == CBUUID(string: "FFE3") {
+                    self.zoomButtonCharacteristic = characteristic as? CBMutableCharacteristic
+                    peripheral.setNotifyValue(true, for: characteristic)
+                    
+                } else if characteristic.uuid == CBUUID(string: "FFE4") {
                     
                     self.qualityButtonCharacteristic = characteristic as? CBMutableCharacteristic
                     peripheral.setNotifyValue(true, for: characteristic)
                     
+                } else if characteristic.uuid == CBUUID(string: "FFE5") {
                     scriptCharacteristic = characteristic
-                    centralDeviceNameCharacteristic = characteristic
                     sendScript(receiveScript ?? "no script")
+                    
+                } else if characteristic.uuid == CBUUID(string: "FFE6") {
+                    centralDeviceNameCharacteristic = characteristic
                     sendDeviceNameToPeripheral()
                 }
             }
@@ -178,40 +200,32 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralManagerD
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        if characteristic.uuid == CBUUID(string: "FFE1"), let value = characteristic.value, let command = String(data: value, encoding: .utf8) {
-            switch command {
-            case "toggle":
-                NotificationCenter.default.post(name: .toggleRecording, object: nil)
-            case "toggleCamera":
-                NotificationCenter.default.post(name: .toggleCamera, object: nil)
-            case "zoomIn":
-                NotificationCenter.default.post(name: .didReceiveZoomCommand, object: nil, userInfo: ["zoomIn": true])
-            case "zoomOut":
-                NotificationCenter.default.post(name: .didReceiveZoomCommand, object: nil, userInfo: ["zoomIn": false])
-            case "toggleQuality":
-                NotificationCenter.default.post(name: .toggleQuality, object: nil)
+        if let value = characteristic.value, let command = String(data: value, encoding: .utf8) {
+            switch characteristic.uuid {
+            case CBUUID(string: "FFE1"): // 녹화 토글
+                if command == "toggle" {
+                    NotificationCenter.default.post(name: .toggleRecording, object: nil)
+                }
+            case CBUUID(string: "FFE2"): // 카메라 전환
+                if command == "toggleCamera" {
+                    NotificationCenter.default.post(name: .toggleCamera, object: nil)
+                }
+            case CBUUID(string: "FFE3"): // 줌 제어
+                if command == "zoomIn" {
+                    NotificationCenter.default.post(name: .didReceiveZoomCommand, object: nil, userInfo: ["zoomIn": true])
+                } else if command == "zoomOut" {
+                    NotificationCenter.default.post(name: .didReceiveZoomCommand, object: nil, userInfo: ["zoomIn": false])
+                }
+            case CBUUID(string: "FFE4"): // 화질 변경
+                if command == "toggleQuality" {
+                    NotificationCenter.default.post(name: .toggleQuality, object: nil)
+                }
             default:
-                break
+                print("Unknown command received: \(command)")
             }
         }
     }
     // MARK: - Peripheral Manager Delegate Methods
-    
-    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
-        if peripheral.state == .poweredOn {
-            let characteristicUUID = CBUUID(string: "FFE1")
-            let recordButtonCharacteristic = CBMutableCharacteristic(type: characteristicUUID, properties: [.write, .notify], value: nil, permissions: [.writeable])
-            
-            let serviceUUID = CBUUID(string: "FFE0")
-            let service = CBMutableService(type: serviceUUID, primary: true)
-            service.characteristics = [recordButtonCharacteristic]
-            
-            peripheralManager.add(service)
-            peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey: [serviceUUID]])
-        } else {
-            print("Peripheral: Bluetooth is not powered on")
-        }
-    }
     
     func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) {
         NotificationCenter.default.post(name: .didConnectToPeripheral, object: nil)

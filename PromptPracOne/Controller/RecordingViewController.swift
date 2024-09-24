@@ -115,7 +115,6 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         }
     }
     
-    
     // UITextView의 실제 표시 줄 수를 계산하는 메서드
     func prepareScriptLines() {
         // 먼저 UITextView에 전체 텍스트를 설정
@@ -261,7 +260,6 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
                 self.recordingView.qualityButton.setTitle("HD \(minFrameRate)", for: .normal)
             }
         }
-        
     }
     
     // 장치 방향 변경 감지 핸들러
@@ -300,8 +298,6 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         }
         return .unknown
     }
-    
- 
     
     @objc func toggleRecording() {
         guard let videoOutput = recordingManager.videoOutput else {

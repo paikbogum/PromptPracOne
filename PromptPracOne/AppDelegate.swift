@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //애드몹
         GADMobileAds.sharedInstance().start(completionHandler: nil)
         
-        
         // 앱 추적 권한 요청
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if #available(iOS 14, *) {

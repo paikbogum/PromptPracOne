@@ -40,45 +40,40 @@ class PeripheralViewController: UIViewController, CBPeripheralManagerDelegate {
     
     func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
         if peripheral.state == .poweredOn {
-            let characteristicUUID = CBUUID(string: "FFE1")
-            recordButtonCharacteristic = CBMutableCharacteristic(type: characteristicUUID, properties: [.write, .notify], value: nil, permissions: [.writeable])
-            switchCameraButtonCharacteristic = CBMutableCharacteristic(type: characteristicUUID, properties: [.write, .notify], value: nil, permissions: [.writeable])
-            zoomCharacteristic = CBMutableCharacteristic(type: characteristicUUID, properties: [.write, .notify], value: nil, permissions: [.writeable])
+            // 고유한 특성 UUID 정의
+            let recordCharacteristicUUID = CBUUID(string: "FFE1")
+            let switchCameraCharacteristicUUID = CBUUID(string: "FFE2")
+            let zoomCharacteristicUUID = CBUUID(string: "FFE3")
+            let qualityCharacteristicUUID = CBUUID(string: "FFE4")
+            let scriptCharacteristicUUID = CBUUID(string: "FFE5")
+            let deviceNameCharacteristicUUID = CBUUID(string: "FFE6")
             
-            qualityCharacteristic = CBMutableCharacteristic(type: characteristicUUID, properties: [.write, .notify], value: nil, permissions: [.writeable])
-            
-            scriptCharacteristic = CBMutableCharacteristic(type: characteristicUUID, properties: [.notify, .write], value: nil, permissions: [.writeable])
-            
-            centralDeviceNameCharacteristic = CBMutableCharacteristic(type: characteristicUUID, properties: [.notify, .write], value: nil, permissions: [.writeable])
-            
-            
+            // 특성 정의
+            recordButtonCharacteristic = CBMutableCharacteristic(type: recordCharacteristicUUID, properties: [.write, .notify], value: nil, permissions: [.writeable])
+            switchCameraButtonCharacteristic = CBMutableCharacteristic(type: switchCameraCharacteristicUUID, properties: [.write, .notify], value: nil, permissions: [.writeable])
+            zoomCharacteristic = CBMutableCharacteristic(type: zoomCharacteristicUUID, properties: [.write, .notify], value: nil, permissions: [.writeable])
+            qualityCharacteristic = CBMutableCharacteristic(type: qualityCharacteristicUUID, properties: [.write, .notify], value: nil, permissions: [.writeable])
+            scriptCharacteristic = CBMutableCharacteristic(type: scriptCharacteristicUUID, properties: [.notify, .write], value: nil, permissions: [.writeable])
+            centralDeviceNameCharacteristic = CBMutableCharacteristic(type: deviceNameCharacteristicUUID, properties: [.notify, .write], value: nil, permissions: [.writeable])
 
+            // 고유한 서비스 UUID 정의
             let serviceUUID = CBUUID(string: "FFE0")
             let service = CBMutableService(type: serviceUUID, primary: true)
-            service.characteristics = [recordButtonCharacteristic!]
             
-            let switchService = CBMutableService(type: serviceUUID, primary: true)
-            switchService.characteristics = [switchCameraButtonCharacteristic!]
+            // 특성을 서비스에 추가
+            service.characteristics = [
+                recordButtonCharacteristic!,
+                switchCameraButtonCharacteristic!,
+                zoomCharacteristic!,
+                qualityCharacteristic!,
+                scriptCharacteristic!,
+                centralDeviceNameCharacteristic!
+            ]
             
-            let zoomService = CBMutableService(type: serviceUUID, primary: true)
-            zoomService.characteristics = [zoomCharacteristic!]
-            
-            let qualityService = CBMutableService(type: serviceUUID, primary: true)
-            qualityService.characteristics = [qualityCharacteristic!]
-            
-            let scriptService = CBMutableService(type: serviceUUID, primary: true)
-            scriptService.characteristics = [scriptCharacteristic!]
-            
-            let nameService = CBMutableService(type: serviceUUID, primary: true)
-            nameService.characteristics = [centralDeviceNameCharacteristic!]
-
+            // 서비스 추가
             peripheralManager.add(service)
-            peripheralManager.add(switchService)
-            peripheralManager.add(zoomService)
-            peripheralManager.add(qualityService)
-            peripheralManager.add(scriptService)
-            peripheralManager.add(nameService)
-
+            
+            // 광고 시작
             peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey: [serviceUUID]])
 
             updateStatusLabel(for: .connecting) // 연결 시도 중 상태로 업데이트
@@ -89,7 +84,6 @@ class PeripheralViewController: UIViewController, CBPeripheralManagerDelegate {
             updateStatusLabel(for: .disconnected) // 연결되지 않은 상태로 업데이트
         }
     }
-    
     // 연결 상태에 따른 라벨 업데이트
     func updateStatusLabel(for state: BluetoothConnectionState) {
         switch state {

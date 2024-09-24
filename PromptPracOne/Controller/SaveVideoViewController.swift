@@ -17,7 +17,6 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
     private var player: AVPlayer?
     private var playerLayer: AVPlayerLayer?
     private var isPlaying = false // 현재 재생 상태를 추적
-    
     private var rewardedAd: GADRewardedAd?
 
 
@@ -28,7 +27,7 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
         setupVideoPlayer()
         setupEndNotification()
         setupTimeObserver()
-        loadRewardedAd()
+        //loadRewardedAd()
         //setupTapGesture() // 탭 제스처 설정
     }
     
@@ -76,6 +75,7 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
         saveView.currentTimeLabel.isHidden = true
     }
     
+    // 광고 메서드
     func loadRewardedAd() {
         //현재는 테스트 id임 바꿔야함
         let adUnitID = "ca-app-pub-3940256099942544/1712485313" // 애드몹에서 생성한 광고 단위 ID
@@ -89,9 +89,10 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
         }
     }
     
-  
-    
     @IBAction func saveButtonTapped(_ sender: UIButton) {
+        self.saveVideoToGallery()
+        //광고 메서드
+        /*
         if let ad = rewardedAd {
             ad.present(fromRootViewController: self) {
                 // 광고를 끝까지 시청했을 때 실행되는 코드
@@ -99,7 +100,7 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
             }
         } else {
             print("Rewarded ad wasn't ready.")
-        }
+        }*/
     }
     
     func saveVideoToGallery() {
@@ -151,17 +152,19 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
         }
     }
     
-    
     private func formatTime(seconds: Double) -> String {
         let mins = Int(seconds) / 60
         let secs = Int(seconds) % 60
         return String(format: "%02d:%02d", mins, secs)
     }
     
+    
+    // 광고메서드
+    /*
     // GADFullScreenContentDelegate 메서드
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         //loadRewardedAd() // 새로운 광고를 로드
         self.saveVideoToGallery()
-    }
+    }*/
     
 }
