@@ -560,24 +560,27 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Sdb-Jd-DVG">
-                                <rect key="frame" x="20" y="119" width="353" height="31"/>
+                                <rect key="frame" x="20" y="102" width="353" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PS5-XK-q9c">
-                                        <rect key="frame" x="0.0" y="0.0" width="294" height="31"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="294" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h0h-e4-uD4">
-                                        <rect key="frame" x="304" y="0.0" width="51" height="31"/>
+                                        <rect key="frame" x="304" y="0.0" width="51" height="30"/>
                                         <connections>
                                             <action selector="switchValueChanged:" destination="tdq-TS-xU2" eventType="valueChanged" id="KfF-En-lgK"/>
                                         </connections>
                                     </switch>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="qhI-dN-3Jw"/>
+                                </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4M2-le-FUG">
-                                <rect key="frame" x="20" y="180" width="353" height="100"/>
+                                <rect key="frame" x="20" y="162" width="353" height="100"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQ2-qL-qVV">
                                         <rect key="frame" x="10" y="9.9999999999999982" width="41.333333333333336" height="20.333333333333329"/>
@@ -633,7 +636,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EXC-UX-TXN">
-                                <rect key="frame" x="20" y="300" width="353" height="100"/>
+                                <rect key="frame" x="20" y="282" width="353" height="100"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y3K-DO-D7G">
                                         <rect key="frame" x="10" y="9.9999999999999982" width="41.333333333333336" height="20.333333333333329"/>
@@ -687,7 +690,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hJV-4V-Kgq">
-                                <rect key="frame" x="20" y="420" width="353" height="100"/>
+                                <rect key="frame" x="20" y="402" width="353" height="100"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EgK-6r-YuI">
                                         <rect key="frame" x="10" y="9.9999999999999982" width="41.333333333333336" height="20.333333333333329"/>
@@ -764,12 +767,12 @@
                             <constraint firstItem="hJV-4V-Kgq" firstAttribute="leading" secondItem="z4N-8R-7Pm" secondAttribute="leading" constant="20" id="QMX-Qx-q8Q"/>
                             <constraint firstItem="4M2-le-FUG" firstAttribute="top" secondItem="Sdb-Jd-DVG" secondAttribute="bottom" constant="30" id="WKD-bm-yqV"/>
                             <constraint firstItem="z4N-8R-7Pm" firstAttribute="trailing" secondItem="EXC-UX-TXN" secondAttribute="trailing" constant="20" id="Yse-9a-pGs"/>
+                            <constraint firstItem="Sdb-Jd-DVG" firstAttribute="top" secondItem="bsO-rQ-Zmq" secondAttribute="bottom" constant="20" id="ZN1-at-TD2"/>
                             <constraint firstItem="z4N-8R-7Pm" firstAttribute="trailing" secondItem="hJV-4V-Kgq" secondAttribute="trailing" constant="20" id="dy5-aW-dwW"/>
                             <constraint firstItem="EXC-UX-TXN" firstAttribute="leading" secondItem="z4N-8R-7Pm" secondAttribute="leading" constant="20" id="hiC-eA-j73"/>
                             <constraint firstItem="hJV-4V-Kgq" firstAttribute="top" secondItem="EXC-UX-TXN" secondAttribute="bottom" constant="20" id="hiq-qP-8y2"/>
                             <constraint firstItem="Sdb-Jd-DVG" firstAttribute="leading" secondItem="z4N-8R-7Pm" secondAttribute="leading" constant="20" id="ifO-ET-mOd"/>
                             <constraint firstItem="z4N-8R-7Pm" firstAttribute="trailing" secondItem="Sdb-Jd-DVG" secondAttribute="trailing" constant="20" id="lfA-Cu-9zu"/>
-                            <constraint firstItem="Sdb-Jd-DVG" firstAttribute="top" secondItem="z4N-8R-7Pm" secondAttribute="top" constant="60" id="poO-6c-2Tq"/>
                             <constraint firstItem="EXC-UX-TXN" firstAttribute="top" secondItem="4M2-le-FUG" secondAttribute="bottom" constant="20" id="zo9-k1-9ZV"/>
                         </constraints>
                         <connections>
