@@ -11,7 +11,7 @@ import UIKit
 class HalfSizePresentationController: UIPresentationController {
     override var frameOfPresentedViewInContainerView: CGRect {
         guard let containerView = containerView else { return .zero }
-
+    
         let heightMultiplier: CGFloat = 0.6 // 높이를 0.6배로 설정
         let width = containerView.bounds.width
         let height = max(containerView.bounds.height * heightMultiplier, 480) // 최소 높이를 450으로 설정
