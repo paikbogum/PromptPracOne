@@ -61,7 +61,7 @@
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal">
-                                    <imageReference key="image" image="link" catalog="system" symbolScale="default"/>
+                                    <imageReference key="image" image="ipad.and.iphone" catalog="system" symbolScale="large"/>
                                 </state>
                                 <connections>
                                     <action selector="bluetoothButtonTapped:" destination="Vgy-Bo-U6O" eventType="touchUpInside" id="BGf-d4-n3I"/>
@@ -809,7 +809,7 @@
         <image name="camera.rotate" catalog="system" width="128" height="93"/>
         <image name="eyes.inverse" catalog="system" width="128" height="98"/>
         <image name="gearshape.fill" catalog="system" width="128" height="123"/>
-        <image name="link" catalog="system" width="128" height="124"/>
+        <image name="ipad.and.iphone" catalog="system" width="128" height="98"/>
         <image name="minus" catalog="system" width="128" height="26"/>
         <image name="play.fill" catalog="system" width="117" height="128"/>
         <image name="plus" catalog="system" width="128" height="113"/>
