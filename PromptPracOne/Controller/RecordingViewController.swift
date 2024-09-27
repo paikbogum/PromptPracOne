@@ -658,6 +658,7 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         }
     }
     
+    
     @objc func cancelButtonTapped() {
         // 오버레이 뷰 제거
         overlayView.removeFromSuperview()
@@ -952,8 +953,10 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
     func configureSession(for quality: VideoQuality) {
         captureSession.beginConfiguration()
         
+        // 기존 입력 제거
         captureSession.inputs.forEach { captureSession.removeInput($0) }
         
+        // 카메라 설정
         guard let camera = getCamera(for: currentCameraPosition) else { return }
         
         do {
@@ -973,6 +976,22 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
             print("Error setting up camera input: \(error.localizedDescription)")
         }
         
+        // 오디오 입력 추가
+        guard let audioDevice = AVCaptureDevice.default(for: .audio) else {
+            print("Error: No audio device available")
+            return
+        }
+        
+        do {
+            let audioInput = try AVCaptureDeviceInput(device: audioDevice)
+            if captureSession.canAddInput(audioInput) {
+                captureSession.addInput(audioInput)
+            }
+        } catch {
+            print("Error setting up audio input: \(error.localizedDescription)")
+            return
+        }
+
         captureSession.commitConfiguration()
     }
     
