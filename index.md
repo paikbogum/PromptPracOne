@@ -10,3 +10,21 @@
 you can contact me at: [guswlsrlacl@naver.com] or [qorguswls00@gmail.com]
 
 
+
+<style>
+  /* 기본 라이트 모드 스타일 */
+  body {
+    background-color: white;
+    color: black;
+  }
+
+  /* 다크 모드 스타일 */
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #121212;
+      color: white;
+    }
+  }
+</style>
+
+
