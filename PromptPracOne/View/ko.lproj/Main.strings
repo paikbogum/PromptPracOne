@@ -1,0 +1,42 @@
+
+/* Class = "UIButton"; normalTitle = "S"; ObjectID = "4mM-0R-5k0"; */
+"4mM-0R-5k0.normalTitle" = "S";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "EgK-6r-YuI"; */
+"EgK-6r-YuI.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "F"; ObjectID = "GKA-cT-odb"; */
+"GKA-cT-odb.normalTitle" = "F";
+
+/* Class = "UITextView"; text = "textView"; ObjectID = "LLC-G3-ULF"; */
+"LLC-G3-ULF.text" = "textView";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "OsL-NI-8Zp"; */
+"OsL-NI-8Zp.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "PS5-XK-q9c"; */
+"PS5-XK-q9c.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "HD 30"; ObjectID = "XPw-3t-0WN"; */
+"XPw-3t-0WN.normalTitle" = "HD 30";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Y3K-DO-D7G"; */
+"Y3K-DO-D7G.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ZA1-M9-of6"; */
+"ZA1-M9-of6.text" = "Label";
+
+/* Class = "UILabel"; text = "00:00"; ObjectID = "aed-vK-bHY"; */
+"aed-vK-bHY.text" = "00:00";
+
+/* Class = "UIButton"; normalTitle = "추가"; ObjectID = "ez4-dS-SyX"; */
+"ez4-dS-SyX.normalTitle" = "추가";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "fQ2-qL-qVV"; */
+"fQ2-qL-qVV.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "mOL-I4-Aer"; */
+"mOL-I4-Aer.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "pAF-S0-e5k"; */
+"pAF-S0-e5k.text" = "Label";

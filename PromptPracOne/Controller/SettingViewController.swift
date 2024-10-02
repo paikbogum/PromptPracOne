@@ -12,6 +12,13 @@ class SettingViewController: UIViewController {
     
     var settingModel = SettingModel()
     
+    let lanA = LanguageManager.shared.setLanguageText(key: "sliderLabel")
+    let lanB = LanguageManager.shared.setLanguageText(key: "speedLabel")
+    
+    let lanC = LanguageManager.shared.setLanguageText(key: "scriptAlpha")
+    
+    let lanD = LanguageManager.shared.setLanguageText(key: "sec")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -88,7 +95,8 @@ class SettingViewController: UIViewController {
         let newVal = round(sender.value)
         sender.value = newVal
         sendFontSize()
-        settingView.sliderLabel.text = "폰트 크기(\(Int(newVal)))"
+        settingView.sliderLabel.text = "\(lanA)(\(Int(newVal)))"
+        
         saveSettings()
     }
     
@@ -98,7 +106,7 @@ class SettingViewController: UIViewController {
         let newVal = round(sender.value * 10) / 10
         sender.value = newVal
         sendBackgroundAlpha()
-        settingView.alphaLabel.text = "스크립트 투명도(\(newVal))"
+        settingView.alphaLabel.text = "\(lanC)(\(newVal))"
         saveSettings()
     }
     
@@ -107,7 +115,7 @@ class SettingViewController: UIViewController {
         let newVal = round(sender.value)
         sender.value = newVal
         sendScrollSpeed()
-        settingView.speedLabel.text = "스크립트 속도(\(newVal)초)"
+        settingView.speedLabel.text = "\(lanB)(\(newVal)\(lanD))"
         saveSettings()
     }
     
@@ -158,7 +166,7 @@ class SettingViewController: UIViewController {
         // Background Alpha: 기본값은 1.0 (불투명)
         if defaults.object(forKey: "backgroundAlpha") != nil {
             settingView.alphaSlider.value = defaults.float(forKey: "backgroundAlpha")
-            settingView.alphaLabel.text = "스크립트 투명도(\(defaults.float(forKey: "backgroundAlpha")))"
+            settingView.alphaLabel.text = "\(lanC)(\(defaults.float(forKey: "backgroundAlpha")))"
         } else {
             settingView.alphaSlider.value = 0.7 // 기본값
         }
@@ -166,7 +174,7 @@ class SettingViewController: UIViewController {
         // Scroll Speed: 기본값은 6.0 초
         if defaults.object(forKey: "scrollSpeed") != nil {
             settingView.speedSlider.value = defaults.float(forKey: "scrollSpeed")
-            settingView.speedLabel.text = "스크립트 속도(\(defaults.float(forKey: "scrollSpeed"))초)"
+            settingView.speedLabel.text = "\(lanB)(\(defaults.float(forKey: "scrollSpeed"))\(lanD))"
         } else {
             settingView.speedSlider.value = 6.0 // 기본값
         }
@@ -174,7 +182,7 @@ class SettingViewController: UIViewController {
         // Font Size: 기본값은 17.0 (일반 텍스트 크기)
         if defaults.object(forKey: "fontSize") != nil {
             settingView.scriptVolumeSlider.value = defaults.float(forKey: "fontSize")
-            settingView.sliderLabel.text = "폰트 크기(\(Int(defaults.float(forKey: "fontSize"))))"
+            settingView.sliderLabel.text = "\(lanA)(\(Int(defaults.float(forKey: "fontSize"))))"
         } else {
             settingView.scriptVolumeSlider.value = 17.0 // 기본값
         }

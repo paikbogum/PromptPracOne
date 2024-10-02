@@ -22,8 +22,8 @@ class MainViewController: UIViewController, ScriptTableViewCellDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setUI()
+        initialLangugeButtonSetting()
         registerXib()
         // NotificationCenter에서 스크립트 추가 알림 수신 설정
         NotificationCenter.default.addObserver(self, selector: #selector(loadScripts), name: .didAddScript, object: nil)
@@ -33,9 +33,9 @@ class MainViewController: UIViewController, ScriptTableViewCellDelegate {
     
     func setUI() {
         mainView.backgroundColor = .black
-        
         mainView.setTableViewUI()
         
+        LanguageManager.shared.setLanguage(for: mainView.mainLabel, key: "allProject")
     }
     
     func registerXib() {
@@ -47,8 +47,6 @@ class MainViewController: UIViewController, ScriptTableViewCellDelegate {
         
         let nibName2 = UINib(nibName: addCellName, bundle: nil)
         mainView.scriptTableView.register(nibName2, forCellReuseIdentifier: addCellReuseIdentifier)
-
-        
     }
     
     // UserDefaults에서 스크립트를 불러오고 날짜순으로 정렬하는 함수
@@ -74,8 +72,6 @@ class MainViewController: UIViewController, ScriptTableViewCellDelegate {
         // ViewController가 메모리에서 해제될 때 Observer 제거
         NotificationCenter.default.removeObserver(self, name: .didAddScript, object: nil)
     }
-    
-    
     
     // 미리보기를 보여주는 함수
     func showScriptPreview(title: String, script: String) {
@@ -124,16 +120,67 @@ class MainViewController: UIViewController, ScriptTableViewCellDelegate {
         sender.view?.removeFromSuperview()
     }
     
-    
     @IBAction func bluetoothButtonTapped(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let blueToothVC = storyboard.instantiateViewController(withIdentifier: "PeripheralViewController") as? PeripheralViewController {
-
+            
             // RecordingViewController로 화면 전환
             navigationController?.pushViewController(blueToothVC, animated: true)
         }
-        
     }
+    
+    func initialLangugeButtonSetting() {
+        let currentLanguage = UserDefaults.standard.array(forKey: "AppleLanguages")?.first as! String
+        
+        if currentLanguage == "ko" {
+            mainView.languageButton.setTitle(" 한국어", for: .normal)
+        } else {
+            mainView.languageButton.setTitle(" English", for: .normal)
+        }
+    }
+    
+    @IBAction func languageButtonTapped(_ sender: UIButton) {
+        let currentLanguage = UserDefaults.standard.array(forKey: "AppleLanguages")?.first as! String
+        
+        print(currentLanguage)
+        
+        if currentLanguage == "ko" {
+            // 현재 언어가 한국어라면 영어로 전환
+            UserDefaults.standard.set(["en"], forKey: "AppleLanguages")
+            UserDefaults.standard.synchronize()  // 설정을 즉시 적용
+            mainView.languageButton.setTitle(" English", for: .normal)
+        } else {
+            // 그 외의 경우 (기본적으로 영어라면) 한국어로 전환
+            UserDefaults.standard.set(["ko"], forKey: "AppleLanguages")
+            UserDefaults.standard.synchronize()  // 설정을 즉시 적용
+
+            mainView.languageButton.setTitle(" 한국어", for: .normal)
+        }
+        LanguageManager.shared.setLanguage(for: mainView.mainLabel, key: "allProject")
+        
+        mainView.scriptTableView.reloadData()
+    }
+    
+    func restartApp() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+        guard let delegate = windowScene.delegate as? SceneDelegate else { return }
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let rootViewController = storyboard.instantiateInitialViewController()
+        
+        delegate.window?.rootViewController = rootViewController
+        delegate.window?.makeKeyAndVisible()
+        
+        UIView.transition(with: delegate.window!, duration: 0.5, options: .transitionCrossDissolve, animations: {}, completion: nil)
+    }
+    
+    @IBAction func infoButtonTapped(_ sender: UIButton) {
+        guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "InfoViewController") as? InfoViewController else { return }
+        
+        vc.modalPresentationStyle = .overFullScreen
+        self.present(vc, animated: true)
+    }
+    
     
     
 }
@@ -146,7 +193,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         
         if indexPath.row < scripts.count {
             guard let cell = mainView.scriptTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? ScriptTableViewCell else { return UITableViewCell()}
@@ -162,60 +208,74 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             guard let cell = mainView.scriptTableView.dequeueReusableCell(withIdentifier: addCellReuseIdentifier, for: indexPath) as? AddScriptTableViewCell else { return UITableViewCell()}
             
+            LanguageManager.shared.setLanguage(for: cell.addLabel, key: "addProject")
+            
             return cell
         }
-                    
+        
     }
     
     // 테이블 뷰의 셀에 대한 스와이프 작업 설정
-     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-         
-         if indexPath.row < scripts.count {
-             let script = scripts[indexPath.row]
-             // 미리보기 액션
-             let previewAction = UIContextualAction(style: .normal, title: "미리보기") { action, view, completionHandler in
-                 
-                 self.showScriptPreview(title: script.title, script: script.script)
-                 completionHandler(true) // 액션이 완료되었음을 알림
-             }
-             previewAction.backgroundColor = .clear // 미리보기 버튼의 배경색 설정
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let previewText = LanguageManager.shared.setLanguageText(key: "preview")
+        let deleteText = LanguageManager.shared.setLanguageText(key: "delete")
+        let cancelText = LanguageManager.shared.setLanguageText(key: "cancel")
+        let deleteOKText = LanguageManager.shared.setLanguageText(key: "deleteOk")
         
-             
-             // 삭제 액션
-             let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { action, view, completionHandler in
-                 let alert = UIAlertController(title: "삭제 확인", message: "이 스크립트를 삭제하시겠습니까?", preferredStyle: .alert)
-                 
-                 let confirmDeleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
-                     self.scripts.remove(at: indexPath.row)
-                     
-                     var savedScripts = UserDefaults.standard.dictionary(forKey: "scripts") as? [String: [String: Any]] ?? [:]
-                     savedScripts.removeValue(forKey: script.title)
-                     UserDefaults.standard.set(savedScripts, forKey: "scripts")
-                     
-                     tableView.reloadData()
-                     
-                     let successAlert = UIAlertController(title: nil, message: "삭제되었습니다.", preferredStyle: .alert)
-                     successAlert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-                     self.present(successAlert, animated: true, completion: nil)
-                 }
-                 
-                 let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-                 alert.addAction(confirmDeleteAction)
-                 alert.addAction(cancelAction)
-                 
-                 self.present(alert, animated: true, completion: nil)
-                 completionHandler(true) // 액션이 완료되었음을 알림
-             }
-             
-             // 액션들을 UISwipeActionsConfiguration에 추가
-             let configuration = UISwipeActionsConfiguration(actions: [deleteAction, previewAction])
-             configuration.performsFirstActionWithFullSwipe = false // 전체 스와이프 시 첫 번째 액션 실행 방지
-             
-             return configuration
-         } else {
-             return nil
-         }
-     }
+        let thisScriptDeleteText =
+        LanguageManager.shared.setLanguageText(key: "thisScriptDelete")
+        
+        let deleteCompleteText =
+        LanguageManager.shared.setLanguageText(key: "deleteComplete")
+        
+        let checkText = LanguageManager.shared.setLanguageText(key: "check")
+        
+        if indexPath.row < scripts.count {
+            let script = scripts[indexPath.row]
+            // 미리보기 액션
+            let previewAction = UIContextualAction(style: .normal, title: previewText) { action, view, completionHandler in
+                
+                self.showScriptPreview(title: script.title, script: script.script)
+                completionHandler(true) // 액션이 완료되었음을 알림
+            }
+            previewAction.backgroundColor = .clear // 미리보기 버튼의 배경색 설정
+            
+            
+            // 삭제 액션
+            let deleteAction = UIContextualAction(style: .destructive, title: deleteText) { action, view, completionHandler in
+                let alert = UIAlertController(title: deleteOKText, message: thisScriptDeleteText, preferredStyle: .alert)
+                
+                let confirmDeleteAction = UIAlertAction(title: deleteText, style: .destructive) { _ in
+                    self.scripts.remove(at: indexPath.row)
+                    
+                    var savedScripts = UserDefaults.standard.dictionary(forKey: "scripts") as? [String: [String: Any]] ?? [:]
+                    savedScripts.removeValue(forKey: script.title)
+                    UserDefaults.standard.set(savedScripts, forKey: "scripts")
+                    
+                    tableView.reloadData()
+                    
+                    let successAlert = UIAlertController(title: nil, message: deleteCompleteText, preferredStyle: .alert)
+                    successAlert.addAction(UIAlertAction(title: checkText, style: .default, handler: nil))
+                    self.present(successAlert, animated: true, completion: nil)
+                }
+                
+                let cancelAction = UIAlertAction(title: cancelText, style: .cancel, handler: nil)
+                alert.addAction(confirmDeleteAction)
+                alert.addAction(cancelAction)
+                
+                self.present(alert, animated: true, completion: nil)
+                completionHandler(true) // 액션이 완료되었음을 알림
+            }
+            
+            // 액션들을 UISwipeActionsConfiguration에 추가
+            let configuration = UISwipeActionsConfiguration(actions: [deleteAction, previewAction])
+            configuration.performsFirstActionWithFullSwipe = false // 전체 스와이프 시 첫 번째 액션 실행 방지
+            
+            return configuration
+        } else {
+            return nil
+        }
+    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -226,10 +286,10 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             scripts[indexPath.row].isExpanded.toggle()
             
             // 선택된 셀만 높이를 애니메이션과 함께 업데이트
-              tableView.beginUpdates()
-              tableView.reloadRows(at: [indexPath], with: .automatic)
-              tableView.endUpdates()
-
+            tableView.beginUpdates()
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+            tableView.endUpdates()
+            
         } else {
             guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UpdateScriptViewController") as? UpdateScriptViewController else { return }
             
@@ -261,11 +321,23 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func didTapTrashButton(at indexPath: IndexPath) {
+        let deleteText = LanguageManager.shared.setLanguageText(key: "delete")
+        let cancelText = LanguageManager.shared.setLanguageText(key: "cancel")
+        let deleteOKText = LanguageManager.shared.setLanguageText(key: "deleteOk")
+        
+        let thisScriptDeleteText =
+        LanguageManager.shared.setLanguageText(key: "thisScriptDelete")
+        
+        let deleteCompleteText =
+        LanguageManager.shared.setLanguageText(key: "deleteComplete")
+        
+        let checkText = LanguageManager.shared.setLanguageText(key: "check")
+        
         let script = scripts[indexPath.row]
         
-        let alert = UIAlertController(title: "삭제 확인", message: "이 스크립트를 삭제하시겠습니까?", preferredStyle: .alert)
+        let alert = UIAlertController(title: deleteOKText, message: thisScriptDeleteText, preferredStyle: .alert)
         
-        let confirmDeleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+        let confirmDeleteAction = UIAlertAction(title: deleteText, style: .destructive) { _ in
             self.scripts.remove(at: indexPath.row)
             
             var savedScripts = UserDefaults.standard.dictionary(forKey: "scripts") as? [String: [String: Any]] ?? [:]
@@ -274,17 +346,17 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             
             self.mainView.scriptTableView.reloadData()
             
-            let successAlert = UIAlertController(title: nil, message: "삭제되었습니다.", preferredStyle: .alert)
-            successAlert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+            let successAlert = UIAlertController(title: nil, message: deleteCompleteText, preferredStyle: .alert)
+            successAlert.addAction(UIAlertAction(title: checkText, style: .default, handler: nil))
             self.present(successAlert, animated: true, completion: nil)
         }
         
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: cancelText, style: .cancel, handler: nil)
         alert.addAction(confirmDeleteAction)
         alert.addAction(cancelAction)
         
         self.present(alert, animated: true, completion: nil)
     }
     
-  
+    
 }

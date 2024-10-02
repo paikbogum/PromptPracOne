@@ -13,12 +13,17 @@ import GoogleMobileAds
 class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
     @IBOutlet var saveView: SaveView!
     
+    
     var videoModel: VideoModel?
     private var player: AVPlayer?
     private var playerLayer: AVPlayerLayer?
     private var isPlaying = false // 현재 재생 상태를 추적
     private var rewardedAd: GADRewardedAd?
 
+    
+    let singletonMan = LanguageManager.shared
+    
+    let lanA = LanguageManager.shared.setLanguageText(key: "failSave")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,14 +117,14 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
         }) { success, error in
             DispatchQueue.main.async {
                 if success {
-                    let alert = UIAlertController(title: "저장 완료", message: "비디오가 갤러리에 저장되었습니다.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { _ in
+                    let alert = UIAlertController(title: self.singletonMan.setLanguageText(key: "alertSaveComplete"), message: self.singletonMan.setLanguageText(key: "completeSaveToGallery"), preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: self.singletonMan.setLanguageText(key: "check"), style: .default, handler: { _ in
                         self.dismiss(animated: true, completion: nil) // 저장 후 화면을 닫습니다.
                     }))
                     self.present(alert, animated: true, completion: nil)
                 } else if let error = error {
-                    let alert = UIAlertController(title: "저장 실패", message: "비디오를 저장하는 도중 오류가 발생했습니다: \(error.localizedDescription)", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+                    let alert = UIAlertController(title: self.singletonMan.setLanguageText(key: "alertFailSaveComplete"), message: "\(self.lanA) \(error.localizedDescription)", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: self.singletonMan.setLanguageText(key: "check"), style: .default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                 }
             }

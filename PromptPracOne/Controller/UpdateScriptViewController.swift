@@ -12,13 +12,13 @@ class UpdateScriptViewController: UIViewController {
     
     var dismissTapGesture: UITapGestureRecognizer?
     var tapGesture: UITapGestureRecognizer?
+    let singletonMan = LanguageManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUI()
         setupKeyboardDismissGesture()
- 
     }
 
     func setUI() {
@@ -46,7 +46,7 @@ class UpdateScriptViewController: UIViewController {
     @IBAction func submitButtonTapped(_ sender: UIButton) {
         guard let title = updateScriptView.titleTF.text, !title.isEmpty,
               let script = updateScriptView.scriptTv.text, !script.isEmpty else {
-            showAlert(message: "제목과 대본을 입력하세요.")
+            showAlert(message: singletonMan.setLanguageText(key: "alertTitleAndScript"))
             return
         }
         
@@ -74,7 +74,7 @@ class UpdateScriptViewController: UIViewController {
     // 알림을 표시하는 함수
     func showAlert(message: String) {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: singletonMan.setLanguageText(key: "check"), style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
     

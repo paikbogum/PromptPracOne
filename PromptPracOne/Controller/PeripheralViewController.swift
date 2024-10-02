@@ -19,6 +19,8 @@ class PeripheralViewController: UIViewController, CBPeripheralManagerDelegate {
     var scriptCharacteristic: CBMutableCharacteristic?
     var centralDeviceNameCharacteristic: CBMutableCharacteristic?
     
+    let singletonMan = LanguageManager.shared
+    
     @IBOutlet var peripheralView: PeripheralView!
 
     override func viewDidLoad() {
@@ -88,11 +90,11 @@ class PeripheralViewController: UIViewController, CBPeripheralManagerDelegate {
     func updateStatusLabel(for state: BluetoothConnectionState) {
         switch state {
         case .disconnected:
-            peripheralView.statusLabel.text = "기기 연결 대기 중..."
+            peripheralView.statusLabel.text = singletonMan.setLanguageText(key: "statusDisconnected")
         case .connecting:
-            peripheralView.statusLabel.text = "기기 연결 중..\n(메인기기에서 해당 기기를 찾아 연결해주세요!)"
+            peripheralView.statusLabel.text = singletonMan.setLanguageText(key: "statusConnecting")
         case .connected:
-            peripheralView.statusLabel.text = "성공적으로 연결되었습니다!"
+            peripheralView.statusLabel.text = singletonMan.setLanguageText(key: "statusConnected")
         }
     }
     

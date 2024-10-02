@@ -10,6 +10,10 @@
 		865E07A0E0EFD2A998DCD2DF /* Pods_PromptPracOne.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA873FC9F809B445CA44C3E /* Pods_PromptPracOne.framework */; };
 		B72476BC2C8D8BE60045F4CD /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72476BB2C8D8BE60045F4CD /* BluetoothManager.swift */; };
 		B72476BE2C933B3A0045F4CD /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72476BD2C933B3A0045F4CD /* NotificationCenter.swift */; };
+		B72476C12CAA6C1A0045F4CD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B72476BF2CAA6C1A0045F4CD /* Localizable.strings */; };
+		B72476C62CAA7E270045F4CD /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72476C52CAA7E270045F4CD /* LanguageManager.swift */; };
+		B72476C82CAC0E960045F4CD /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72476C72CAC0E960045F4CD /* InfoView.swift */; };
+		B72476CA2CAD7DCA0045F4CD /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72476C92CAD7DCA0045F4CD /* InfoViewController.swift */; };
 		B77C291C2C6A344C003C4D91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C291B2C6A344C003C4D91 /* AppDelegate.swift */; };
 		B77C291E2C6A344C003C4D91 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C291D2C6A344C003C4D91 /* SceneDelegate.swift */; };
 		B77C29232C6A344C003C4D91 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = B77C29222C6A344C003C4D91 /* Base */; };
@@ -49,6 +53,13 @@
 		6AA873FC9F809B445CA44C3E /* Pods_PromptPracOne.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PromptPracOne.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B72476BB2C8D8BE60045F4CD /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
 		B72476BD2C933B3A0045F4CD /* NotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
+		B72476C02CAA6C1A0045F4CD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B72476C22CAA6CAE0045F4CD /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
+		B72476C32CAA6CAE0045F4CD /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		B72476C42CAA6CAF0045F4CD /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B72476C52CAA7E270045F4CD /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
+		B72476C72CAC0E960045F4CD /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
+		B72476C92CAD7DCA0045F4CD /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		B77C29182C6A344C003C4D91 /* PromptPracOne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PromptPracOne.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B77C291B2C6A344C003C4D91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B77C291D2C6A344C003C4D91 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -141,6 +152,7 @@
 				B77DE3912C77683000B254C9 /* Controller */,
 				B77C29262C6A344F003C4D91 /* LaunchScreen.storyboard */,
 				B77C29292C6A344F003C4D91 /* Info.plist */,
+				B72476BF2CAA6C1A0045F4CD /* Localizable.strings */,
 			);
 			path = PromptPracOne;
 			sourceTree = "<group>";
@@ -155,6 +167,7 @@
 				B77DE3B62C83502100B254C9 /* VideoModel.swift */,
 				B72476BB2C8D8BE60045F4CD /* BluetoothManager.swift */,
 				B72476BD2C933B3A0045F4CD /* NotificationCenter.swift */,
+				B72476C52CAA7E270045F4CD /* LanguageManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -165,6 +178,7 @@
 				B77C29242C6A344F003C4D91 /* Assets.xcassets */,
 				B77C29212C6A344C003C4D91 /* Main.storyboard */,
 				B77DE3A22C7DC6A200B254C9 /* MainView.swift */,
+				B72476C72CAC0E960045F4CD /* InfoView.swift */,
 				B77DE3922C77686E00B254C9 /* RecordingView.swift */,
 				B77DE39A2C7B360C00B254C9 /* SettingView.swift */,
 				B77DE3B82C83519E00B254C9 /* SaveView.swift */,
@@ -185,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				B77DE3A02C7DC67900B254C9 /* MainViewController.swift */,
+				B72476C92CAD7DCA0045F4CD /* InfoViewController.swift */,
 				B77DE3A82C7DC9AE00B254C9 /* UpdateScriptViewController.swift */,
 				B77DE3942C7768A100B254C9 /* RecordingViewController.swift */,
 				B77DE3B22C834FD700B254C9 /* SaveVideoViewController.swift */,
@@ -240,6 +255,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = B77C290F2C6A344C003C4D91;
 			productRefGroup = B77C29192C6A344C003C4D91 /* Products */;
@@ -259,6 +275,7 @@
 				B77DE3A72C7DC7C700B254C9 /* ScriptTableViewCell.xib in Resources */,
 				B77C29252C6A344F003C4D91 /* Assets.xcassets in Resources */,
 				B77C29282C6A344F003C4D91 /* Base in Resources */,
+				B72476C12CAA6C1A0045F4CD /* Localizable.strings in Resources */,
 				B7E56F062C8C50360037EFBF /* CentralTableViewCell.xib in Resources */,
 				B77DE3B02C8077AD00B254C9 /* AddScriptTableViewCell.xib in Resources */,
 				B77C29232C6A344C003C4D91 /* Base in Resources */,
@@ -318,17 +335,20 @@
 				B7E56EFC2C870B0F0037EFBF /* VideoQuality.swift in Sources */,
 				B72476BC2C8D8BE60045F4CD /* BluetoothManager.swift in Sources */,
 				B77DE38C2C77669F00B254C9 /* RecordingManager.swift in Sources */,
+				B72476CA2CAD7DCA0045F4CD /* InfoViewController.swift in Sources */,
 				B7E56F082C8C58920037EFBF /* PeripheralView.swift in Sources */,
 				B77C291C2C6A344C003C4D91 /* AppDelegate.swift in Sources */,
 				B77DE3952C7768A100B254C9 /* RecordingViewController.swift in Sources */,
 				B72476BE2C933B3A0045F4CD /* NotificationCenter.swift in Sources */,
 				B77DE39B2C7B360C00B254C9 /* SettingView.swift in Sources */,
+				B72476C82CAC0E960045F4CD /* InfoView.swift in Sources */,
 				B77C291E2C6A344C003C4D91 /* SceneDelegate.swift in Sources */,
 				B77DE39F2C7B3AE800B254C9 /* HalfSizePresentationController.swift in Sources */,
 				B77DE3A32C7DC6A200B254C9 /* MainView.swift in Sources */,
 				B77DE3B32C834FD700B254C9 /* SaveVideoViewController.swift in Sources */,
 				B7E56EFE2C88753B0037EFBF /* PeripheralViewController.swift in Sources */,
 				B7E56F022C8C4EA40037EFBF /* CentralView.swift in Sources */,
+				B72476C62CAA7E270045F4CD /* LanguageManager.swift in Sources */,
 				B77DE3B12C8077AD00B254C9 /* AddScriptTableViewCell.swift in Sources */,
 				B77DE3AD2C7F649700B254C9 /* CustomColor.swift in Sources */,
 				B77DE3A62C7DC7C700B254C9 /* ScriptTableViewCell.swift in Sources */,
@@ -347,10 +367,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		B72476BF2CAA6C1A0045F4CD /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B72476C02CAA6C1A0045F4CD /* en */,
+				B72476C42CAA6CAF0045F4CD /* ko */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		B77C29212C6A344C003C4D91 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				B77C29222C6A344C003C4D91 /* Base */,
+				B72476C22CAA6CAE0045F4CD /* ko */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -359,6 +389,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				B77C29272C6A344F003C4D91 /* Base */,
+				B72476C32CAA6CAE0045F4CD /* ko */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -371,6 +402,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -434,6 +466,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";

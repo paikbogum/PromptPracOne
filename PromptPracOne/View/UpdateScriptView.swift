@@ -19,6 +19,8 @@ class UpdateScriptView: UIView {
     
     @IBOutlet weak var mainLabel: UILabel!
     
+    let singletonMan = LanguageManager.shared
+    
     func setMainUIViewUI() {
         mainUIView.layer.cornerRadius = 8
         mainUIView.clipsToBounds = true
@@ -28,21 +30,21 @@ class UpdateScriptView: UIView {
         //submitButton.clipsToBounds = true
         submitButton.tintColor = .white
         submitButton.backgroundColor = .clear
-        submitButton.setTitle("저장", for: .normal)
+        submitButton.setTitle(singletonMan.setLanguageText(key: "save"), for: .normal)
         submitButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
 
         
         
         mainLabel.font = UIFont.boldSystemFont(ofSize: 22)
         mainLabel.textColor = .white
-        mainLabel.text = "프로젝트 추가"
+        mainLabel.text = singletonMan.setLanguageText(key: "addProject")
     }
     
     func setTextfieldUI() {
         titleTF.backgroundColor = .black
         titleTF.layer.cornerRadius = 8
         titleTF.clipsToBounds = true
-        titleTF.placeholder = "제목을 입력해주세요"
+        titleTF.placeholder = singletonMan.setLanguageText(key: "titlePlaceholder")
         titleTF.textColor = .white
         titleTF.font = UIFont.boldSystemFont(ofSize: 18)
     }

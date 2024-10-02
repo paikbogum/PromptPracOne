@@ -1,0 +1,53 @@
+/* 
+  Localizable.strings
+  PromptPracOne
+
+  Created by 백현진 on 9/30/24.
+  
+*/
+
+"check" = "확인";
+"preview" = "미리보기";
+"delete" = "삭제";
+"cancel" = "취소";
+"deleteOk" = "삭제 확인";
+
+//MainVC
+"allProject" = "전체 프로젝트";
+"addProject" = "프로젝트 추가";
+"thisScriptDelete" = "이 스크립트를 삭제하시겠습니까?";
+"deleteComplete" = "삭제되었습니다.";
+
+//UpdateScriptVC
+"save" = "저장";
+"titlePlaceholder" = "제목을 입력해주세요";
+"alertTitleAndScript" = "제목과 대본을 입력하세요";
+
+
+//peripheralVC
+"statusDisconnected" = "기기 연결 대기중...";
+"statusConnecting" = "기기 연결중..\n(메인기기에서 해당 기기를 찾아 연결해주세요!)";
+"statusConnected" = "성공적으로 연결되었습니다!";
+
+//SettingVC
+"switchLabel" = "부드러운 스크롤";
+"sliderLabel" = "폰트 크기";
+"speedLabel" = "스크립트 속도";
+"scriptAlpha" = "스크립트 투명도";
+"sec" = "초";
+
+
+//saveVideoVC
+"alertSaveComplete" = "저장 완료";
+"completeSaveToGallery" = "비디오가 갤러리에 저장되었습니다.";
+"alertFailSaveComplete" = "저장 실패";
+"failSave" = "비디오를 저장하는 도중 오류가 발생했습니다:";
+
+//recordingVC
+"alreadyConnected" = "연결된 기기가 있습니다.";
+"findDevice" = "주변 기기를 찾고 있습니다...";
+
+//infoVC
+"emailLabel" = "문의/피드백: qorguswls00@gmail.com";
+"versionLabel" = "현재 버전:";
+"privacyBtn" = "개인정보처리방침";

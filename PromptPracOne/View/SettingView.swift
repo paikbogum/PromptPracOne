@@ -33,13 +33,15 @@ class SettingView: UIView {
     
     @IBOutlet weak var topSmallView: UILabel!
     
+    let singletonMan = LanguageManager.shared
+    
     
     func setFontViewUI() {
-        switchLabel.text = "부드러운 스크롤"
+        switchLabel.text = singletonMan.setLanguageText(key: "switchLabel")
         switchLabel.font = UIFont.systemFont(ofSize: 17.0, weight: .bold)
         switchLabel.textColor = .white
         
-        sliderLabel.text = "폰트 크기"
+        sliderLabel.text = singletonMan.setLanguageText(key: "sliderLabel")
         sliderLabel.font = UIFont.systemFont(ofSize: 17.0, weight: .bold)
         sliderLabel.textColor = .white
         
@@ -53,7 +55,7 @@ class SettingView: UIView {
     }
     
     func setSpeedViewUI() {
-        speedLabel.text = "스크립트 속도"
+        speedLabel.text = singletonMan.setLanguageText(key: "speedLabel")
         speedLabel.font = UIFont.systemFont(ofSize: 17.0, weight: .bold)
         speedLabel.textColor = .white
         
@@ -64,7 +66,7 @@ class SettingView: UIView {
     
     
     func setAlphaViewUI() {
-        alphaLabel.text = "스크립트 투명도"
+        alphaLabel.text = singletonMan.setLanguageText(key: "scriptAlpha")
         alphaLabel.font = UIFont.systemFont(ofSize: 17.0, weight: .bold)
         alphaLabel.textColor = .white
         

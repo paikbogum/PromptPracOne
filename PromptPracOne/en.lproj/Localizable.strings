@@ -1,0 +1,56 @@
+/* 
+  Localizable.strings
+  PromptPracOne
+
+  Created by 백현진 on 9/30/24.
+  
+*/
+
+"check" = "Check";
+"preview" = "Preview";
+"delete" = "Delete";
+"cancel" = "Cancel";
+"deleteOk" = "Confirm deletion";
+
+
+//MainVC
+"allProject" = "Entire Project";
+"addProject" = "Add Project";
+"thisScriptDelete" = "Are you sure you want to delete this script?";
+"deleteComplete" = "Deleted complete.";
+
+
+//UpdateScriptVC
+"save" = "save";
+"titlePlaceholder" = "Please enter the title";
+
+"alertTitleAndScript" = "Please enter the title and script";
+
+
+//PeripheralVC
+"statusDisconnected" = "Waiting to connect to the device...";
+"statusConnecting" = "Connecting devices..\n(Please find and connect the device from the main device!)";
+"statusConnected" = "You have been successfully connected!";
+
+
+//SettingVC
+"switchLabel" = "Smooth scrolling";
+"sliderLabel" = "Font Size";
+"speedLabel" = "Script Speed";
+"scriptAlpha" = "Script Opacity";
+"sec" = "sec";
+
+//saveVideoVC
+"alertSaveComplete" = "Save complete";
+"completeSaveToGallery" = "Your video has been saved to your gallery.";
+"alertFailSaveComplete" = "Failed to save";
+"failSave" = "An error occurred saving the video:";
+
+//recordingVC
+"alreadyConnected" = "There are connected devices.";
+"findDevice" = "Looking for peripherals...";
+
+//infoVC
+"emailLabel" = "Contact/Feedback: qorguswls00@gmail.com";
+"versionLabel" = "Current version:";
+"privacyBtn" = "Privacy policy";

@@ -606,7 +606,7 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         let buttonWidth = overlayView.bounds.width - 40 // 버튼 너비는 전체 뷰 너비에서 리딩/트레일링 20씩 뺀 값
         let cancelButton = UIButton(frame: CGRect(x: (overlayView.bounds.width - buttonWidth) / 2, y: overlayView.bounds.height - cancelButtonHeight - safeAreaBottomInset - 20, width: buttonWidth, height: cancelButtonHeight))
         
-        cancelButton.setTitle("닫기", for: .normal)
+        cancelButton.setTitle(LanguageManager.shared.setLanguageText(key: "cancel"), for: .normal)
         cancelButton.setTitleColor(CustomColor.backgroundColor.color, for: .normal)
         cancelButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         cancelButton.backgroundColor = CustomColor.darkModeBackgroundColor.color
@@ -633,10 +633,10 @@ class RecordingViewController: UIViewController, AVCaptureFileOutputRecordingDel
         
         // 이미 연결된 기기가 있는지 확인
         if BluetoothManager.shared.isConnected {
-            label.text = "연결된 기기가 있습니다."
+            label.text = LanguageManager.shared.setLanguageText(key: "alreadyConnected")
             activityIndicator.stopAnimating() // 이미 연결된 경우 로딩 중지
         } else {
-            label.text = "주변 기기를 찾고 있습니다..."
+            label.text = LanguageManager.shared.setLanguageText(key: "findDevice")
             activityIndicator.startAnimating() // 연결된 기기가 없을 경우 로딩 시작
             // 블루투스 스캔 시작 (이미 연결된 기기가 없을 때만 스캔)
             BluetoothManager.shared.initializeCentralManager()

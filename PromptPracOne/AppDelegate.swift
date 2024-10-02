@@ -38,6 +38,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }
+        
+        // UserDefaults에 AppleLanguages 값이 있는지 확인(초기 설정을 위함)
+         if UserDefaults.standard.array(forKey: "AppleLanguages") == nil {
+             // AppleLanguages가 없다면 기기의 기본 언어를 저장
+             if let deviceLanguage = Locale.preferredLanguages.first {
+                 let languageCode = String(deviceLanguage.prefix(2)) // 언어 코드만 저장 (ko, en 등)
+                 UserDefaults.standard.set([languageCode], forKey: "AppleLanguages")
+                 UserDefaults.standard.synchronize()
+                 print("기기의 언어가 저장되었습니다: \(languageCode)")
+             }
+         }
        
         return true
     }
