@@ -13,13 +13,11 @@ import GoogleMobileAds
 class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
     @IBOutlet var saveView: SaveView!
     
-    
     var videoModel: VideoModel?
     private var player: AVPlayer?
     private var playerLayer: AVPlayerLayer?
     private var isPlaying = false // 현재 재생 상태를 추적
     private var rewardedAd: GADRewardedAd?
-
     
     let singletonMan = LanguageManager.shared
     
@@ -32,7 +30,7 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
         setupVideoPlayer()
         setupEndNotification()
         setupTimeObserver()
-        //loadRewardedAd()
+        loadRewardedAd() // 다음 버전에 활성화
         //setupTapGesture() // 탭 제스처 설정
     }
     
@@ -82,8 +80,8 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
     
     // 광고 메서드
     func loadRewardedAd() {
-        //현재는 테스트 id임 바꿔야함
-        let adUnitID = "ca-app-pub-3940256099942544/1712485313" // 애드몹에서 생성한 광고 단위 ID
+        //let adUnitID = "ca-app-pub-3940256099942544/1712485313" // 애드몹에서 생성한 광고 단위ID
+        let adUnitID = "ca-app-pub-6249716395928500/6491664492"
         GADRewardedAd.load(withAdUnitID: adUnitID, request: GADRequest()) { ad, error in
             if let error = error {
                 print("Failed to load rewarded ad with error: \(error.localizedDescription)")
@@ -95,17 +93,16 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
     }
     
     @IBAction func saveButtonTapped(_ sender: UIButton) {
-        self.saveVideoToGallery()
         //광고 메서드
-        /*
         if let ad = rewardedAd {
             ad.present(fromRootViewController: self) {
                 // 광고를 끝까지 시청했을 때 실행되는 코드
                 print("광고 끝")
+                self.saveVideoToGallery()
             }
         } else {
             print("Rewarded ad wasn't ready.")
-        }*/
+        }
     }
     
     func saveVideoToGallery() {
@@ -147,7 +144,6 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
         player?.pause() // 뷰가 사라질 때 비디오 재생을 멈춤
     }
     
-    
     private func setupTimeObserver() {
         // 1초마다 현재 재생 시간을 업데이트
         let interval = CMTime(seconds: 1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
@@ -163,13 +159,12 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
         return String(format: "%02d:%02d", mins, secs)
     }
     
-    
     // 광고메서드
-    /*
+    
     // GADFullScreenContentDelegate 메서드
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
-        //loadRewardedAd() // 새로운 광고를 로드
+        loadRewardedAd() // 새로운 광고를 로드
         self.saveVideoToGallery()
-    }*/
+    }
     
 }
