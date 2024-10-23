@@ -80,7 +80,10 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
     
     // 광고 메서드
     func loadRewardedAd() {
-        //let adUnitID = "ca-app-pub-3940256099942544/1712485313" // 애드몹에서 생성한 광고 단위ID
+        //test id
+        //let adUnitID = "ca-app-pub-3940256099942544/1712485313"
+        
+        // 애드몹에서 생성한 광고 단위ID
         let adUnitID = "ca-app-pub-6249716395928500/6491664492"
         GADRewardedAd.load(withAdUnitID: adUnitID, request: GADRequest()) { ad, error in
             if let error = error {
@@ -101,7 +104,9 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
                 self.saveVideoToGallery()
             }
         } else {
-            print("Rewarded ad wasn't ready.")
+            print("Rewarded ad wasn't ready, saving video directly.")
+            // 광고가 준비되지 않은 경우 바로 비디오 저장
+            saveVideoToGallery()
         }
     }
     
@@ -166,5 +171,4 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
         loadRewardedAd() // 새로운 광고를 로드
         self.saveVideoToGallery()
     }
-    
 }
