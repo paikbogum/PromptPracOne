@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
 
 class MainView: UIView {
@@ -18,6 +19,12 @@ class MainView: UIView {
     @IBOutlet weak var infoButton: UIButton!
     
     
+    let demoAdmobView: GADBannerView = { // admob 부분
+        var view = GADBannerView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     func setTableViewUI() {
         mainLabel.font = UIFont.boldSystemFont(ofSize: 25)
         mainLabel.textColor = .white

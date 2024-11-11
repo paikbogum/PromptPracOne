@@ -85,6 +85,7 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
         
         // 애드몹에서 생성한 광고 단위ID
         let adUnitID = "ca-app-pub-6249716395928500/6491664492"
+
         GADRewardedAd.load(withAdUnitID: adUnitID, request: GADRequest()) { ad, error in
             if let error = error {
                 print("Failed to load rewarded ad with error: \(error.localizedDescription)")

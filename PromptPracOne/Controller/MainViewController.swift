@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import AdSupport
+import GoogleMobileAds
 
 class MainViewController: UIViewController, ScriptTableViewCellDelegate {
     @IBOutlet var mainView: MainView!
@@ -29,6 +31,27 @@ class MainViewController: UIViewController, ScriptTableViewCellDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(loadScripts), name: .didAddScript, object: nil)
         
         loadScripts() // 초기 스크립트 로드
+        
+        setAdmobViewUI()
+    }
+    
+    func setAdmobViewUI() {
+        //하단 배너 관련
+        view.addSubview(mainView.demoAdmobView)
+        mainView.demoAdmobView.adUnitID = "ca-app-pub-6249716395928500/3045931395" // test Key
+        
+        //진짜id: ca-app-pub-6249716395928500/3045931395
+        //테스트id: ca-app-pub-3940256099942544/2934735716
+        mainView.demoAdmobView.rootViewController = self
+        mainView.demoAdmobView.load(GADRequest())
+        mainView.demoAdmobView.delegate = self
+    
+        
+        mainView.demoAdmobView.widthAnchor.constraint(equalToConstant: GADAdSizeBanner.size.width).isActive = true
+        mainView.demoAdmobView.heightAnchor.constraint(equalToConstant: GADAdSizeBanner.size.height).isActive = true
+        mainView.demoAdmobView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        mainView.demoAdmobView.bottomAnchor.constraint(equalTo: mainView.scriptTableView.bottomAnchor).isActive = true
+        
     }
     
     func setUI() {
@@ -212,7 +235,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             
             return cell
         }
-        
     }
     
     // 테이블 뷰의 셀에 대한 스와이프 작업 설정
@@ -357,6 +379,22 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         
         self.present(alert, animated: true, completion: nil)
     }
+}
+
+
+extension MainViewController: GADBannerViewDelegate {
+    public func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        bannerView.alpha = 0
+        UIView.animate(withDuration: 1) {
+            print("Banner ad loaded successfully.")
+            bannerView.alpha = 1
+        }
+    }
     
-    
+    public func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
+        print("Failed to load banner ad with error: \(error.localizedDescription)")
+
+        // 광고 로드 실패 시 처리
+        bannerView.isHidden = true // 광고 뷰 숨기기
+    }
 }
