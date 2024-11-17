@@ -9,6 +9,7 @@ import UIKit
 import Photos
 import AVFoundation
 import GoogleMobileAds
+import SwiftRater
 
 class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
     @IBOutlet var saveView: SaveView!
@@ -17,12 +18,14 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
     private var player: AVPlayer?
     private var playerLayer: AVPlayerLayer?
     private var isPlaying = false // 현재 재생 상태를 추적
-    private var rewardedAd: GADRewardedAd?
+    private var rewardedInterstitialAd: GADRewardedInterstitialAd?
+    
+    private var hideButtonTimer: Timer?
     
     let singletonMan = LanguageManager.shared
     
     let lanA = LanguageManager.shared.setLanguageText(key: "failSave")
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,9 +33,16 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
         setupVideoPlayer()
         setupEndNotification()
         setupTimeObserver()
-        loadRewardedAd() // 다음 버전에 활성화
+        loadRewardedInterstitialAd() // 보상형 전면광고
+        addTapGestureRecognizer()
         //setupTapGesture() // 탭 제스처 설정
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        playerLayer?.frame = saveView.videoContainerView.bounds
+    }
+    
     
     private func setupVideoPlayer() {
         guard let videoURL = videoModel?.videoURL else { return }
@@ -50,23 +60,86 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
         
         saveView.videoContainerView.layer.addSublayer(playerLayer)
         
-        // 비디오 초기 상태는 일시 정지
-        player?.pause()
-        isPlaying = false
+        saveView.progressBar.value = 0.0
+    }
+    
+    private func setupTimeObserver() {
+        let interval = CMTime(seconds: 1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        player?.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main) { [weak self] time in
+            guard let self = self, let currentItem = self.player?.currentItem else { return }
+            let currentTime = CMTimeGetSeconds(time)
+            let duration = CMTimeGetSeconds(currentItem.duration)
+            
+            if duration.isFinite {
+                saveView.progressBar.value = Float(currentTime / duration)
+                saveView.currentTimeLabel.text = self.formatTime(seconds: currentTime)
+                saveView.remainTimeLabel.text = self.formatTime(seconds: duration - currentTime)
+            }
+        }
     }
 
+    @IBAction func progressBarValueChanged(_ sender: UISlider) {
+        guard let duration = player?.currentItem?.duration else { return }
+        let totalSeconds = CMTimeGetSeconds(duration)
+        let value = Float64(sender.value) * totalSeconds
+        let seekTime = CMTime(seconds: value, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        player?.seek(to: seekTime)
+        
+        // Update labels manually after seeking
+        saveView.currentTimeLabel.text = formatTime(seconds: value)
+        saveView.remainTimeLabel.text = formatTime(seconds: totalSeconds - value)
+    }
+    
+    deinit {
+        player?.pause()
+        player = nil
+        hideButtonTimer?.invalidate()
+    }
+    
     @IBAction func playPauseButtonTapped(_ sender: UIButton) {
         if isPlaying {
             player?.pause()
             saveView.playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+            showPlayButton()
         } else {
             saveView.currentTimeLabel.isHidden = false
             player?.play()
             saveView.playPauseButton.setImage(UIImage(systemName: "stop.fill"), for: .normal)
+            
+            showPlayButton() // 버튼을 다시 표시
+            hidePlayButton(after: 3.0) // 3초 후에 버튼 숨기기
         }
         isPlaying.toggle()
     }
     
+    private func showPlayButton() {
+        hideButtonTimer?.invalidate() // 기존 타이머 취소
+        UIView.animate(withDuration: 0.3) {
+            self.saveView.playPauseButton.alpha = 1.0
+        }
+        hidePlayButton(after: 3.0) // 3초 후 숨기기
+    }
+    
+    private func hidePlayButton(after delay: TimeInterval) {
+        hideButtonTimer?.invalidate() // 기존 타이머 취소
+        hideButtonTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] _ in
+            UIView.animate(withDuration: 0.3) {
+                self?.saveView.playPauseButton.alpha = 0.0
+            }
+        }
+    }
+    
+    private func addTapGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleScreenTap))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func handleScreenTap() {
+        if saveView.playPauseButton.alpha == 0 {
+            showPlayButton()
+        }
+    }
+
     private func setupEndNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(videoDidEnd), name: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
     }
@@ -79,26 +152,25 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
     }
     
     // 광고 메서드
-    func loadRewardedAd() {
-        //test id
-        //let adUnitID = "ca-app-pub-3940256099942544/1712485313"
+    func loadRewardedInterstitialAd() {
+        //let adUnitID = "ca-app-pub-3940256099942544/6978759866" // 테스트 광고 ID
         
         // 애드몹에서 생성한 광고 단위ID
-        let adUnitID = "ca-app-pub-6249716395928500/6491664492"
-
-        GADRewardedAd.load(withAdUnitID: adUnitID, request: GADRequest()) { ad, error in
+        let adUnitID = "ca-app-pub-6249716395928500/6258053138" //진짜 ID
+        GADRewardedInterstitialAd.load(withAdUnitID: adUnitID, request: GADRequest()) { ad, error in
             if let error = error {
-                print("Failed to load rewarded ad with error: \(error.localizedDescription)")
+                print("Failed to load rewarded interstitial ad: \(error.localizedDescription)")
                 return
             }
-            self.rewardedAd = ad
-            self.rewardedAd?.fullScreenContentDelegate = self
+            self.rewardedInterstitialAd = ad
+            self.rewardedInterstitialAd?.fullScreenContentDelegate = self
+            print("Rewarded interstitial ad loaded.")
         }
     }
     
     @IBAction func saveButtonTapped(_ sender: UIButton) {
         //광고 메서드
-        if let ad = rewardedAd {
+        if let ad = rewardedInterstitialAd {
             ad.present(fromRootViewController: self) {
                 // 광고를 끝까지 시청했을 때 실행되는 코드
                 print("광고 끝")
@@ -123,6 +195,10 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
                     let alert = UIAlertController(title: self.singletonMan.setLanguageText(key: "alertSaveComplete"), message: self.singletonMan.setLanguageText(key: "completeSaveToGallery"), preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: self.singletonMan.setLanguageText(key: "check"), style: .default, handler: { _ in
                         self.dismiss(animated: true, completion: nil) // 저장 후 화면을 닫습니다.
+                        
+                        //인앱 리뷰 팝업 띄우기
+                        SwiftRater.check()
+                     
                     }))
                     self.present(alert, animated: true, completion: nil)
                 } else if let error = error {
@@ -139,17 +215,12 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        // 레이아웃 변경에 따라 플레이어 레이어 크기 업데이트
-        playerLayer?.frame = saveView.videoContainerView.bounds
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         player?.pause() // 뷰가 사라질 때 비디오 재생을 멈춤
     }
     
+    /*
     private func setupTimeObserver() {
         // 1초마다 현재 재생 시간을 업데이트
         let interval = CMTime(seconds: 1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
@@ -157,7 +228,7 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
             let seconds = CMTimeGetSeconds(time)
             self?.saveView.currentTimeLabel.text = self?.formatTime(seconds: seconds)
         }
-    }
+    }*/
     
     private func formatTime(seconds: Double) -> String {
         let mins = Int(seconds) / 60
@@ -169,7 +240,7 @@ class SaveVideoViewController: UIViewController, GADFullScreenContentDelegate {
     
     // GADFullScreenContentDelegate 메서드
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
-        loadRewardedAd() // 새로운 광고를 로드
+        loadRewardedInterstitialAd() // 새로운 광고를 로드
         self.saveVideoToGallery()
     }
 }

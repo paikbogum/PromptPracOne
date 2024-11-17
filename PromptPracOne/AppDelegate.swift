@@ -9,6 +9,7 @@ import UIKit
 import GoogleMobileAds
 import AppTrackingTransparency
 import AdSupport
+import SwiftRater
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -49,7 +50,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                  print("기기의 언어가 저장되었습니다: \(languageCode)")
              }
          }
-       
+        
+        //인앱 리뷰 라이브러리
+        SwiftRater.daysUntilPrompt = 7 // 앱을 시작한 이후 5일이 지난 후에 리뷰 요청
+        SwiftRater.usesUntilPrompt = 7 // 앱을 실행한 횟수가 5회 이상일 때 리뷰 요청
+        SwiftRater.significantUsesUntilPrompt = 3 // 앱 사용자가 앱에서 새로운 기능을 사용한 횟수가 3회 이상일 때 리뷰 요청
+        SwiftRater.daysBeforeReminding = 7 // 리뷰 요청을 거절한 이후 7일이 지나면 다시 리뷰 요청
+        SwiftRater.showLaterButton = true // "나중에" 버튼을 보여줍니다.
+        SwiftRater.debugMode = false // 테스트에 유용한 디버그 모드에서 프롬프트가 표시되는지 여부를 결정합니다.
+        SwiftRater.appLaunched() // 앱이 시작되었음을 라이브러리에 알리는 데 사용됩니다.
+        
         return true
     }
 

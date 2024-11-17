@@ -38,10 +38,11 @@ class MainViewController: UIViewController, ScriptTableViewCellDelegate {
     func setAdmobViewUI() {
         //하단 배너 관련
         view.addSubview(mainView.demoAdmobView)
-        mainView.demoAdmobView.adUnitID = "ca-app-pub-6249716395928500/3045931395" // test Key
+        mainView.demoAdmobView.adUnitID = "ca-app-pub-6249716395928500/3045931395"
         
         //진짜id: ca-app-pub-6249716395928500/3045931395
         //테스트id: ca-app-pub-3940256099942544/2934735716
+        
         mainView.demoAdmobView.rootViewController = self
         mainView.demoAdmobView.load(GADRequest())
         mainView.demoAdmobView.delegate = self
